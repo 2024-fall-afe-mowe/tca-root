@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <h1 className = 'text-3xl font-bold underline'>ROOT</h1>
-      <button>Play Game</button>
+      <button className='btn btn-secondary'>Play Game</button>
     </div>
   );
 }
