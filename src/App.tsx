@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import PlayGame from './PlayGame'; // Make sure the path is correct
+import PlayGame from './PlayGame';
 import './App.css';
 
 function App() {
