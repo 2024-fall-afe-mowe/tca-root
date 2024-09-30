@@ -9,6 +9,7 @@ const PlayGame: React.FC = () => {
       <Link to="/" className="btn btn-secondary">
         Back to Home
       </Link>
+      {/* Add more content here */}
     </div>
   );
 };
