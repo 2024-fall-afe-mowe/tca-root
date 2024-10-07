@@ -38,6 +38,27 @@
 }
 
 /* CSS for dice roller function */
+
+/* Dice label container for positioning labels */
+.dice-label-container {
+  display: flex;
+  justify-content: space-between;
+  width: 250px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+/* Label styles for Attacker and Defender */
+.dice-label-left, .dice-label-right {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.label {
+  text-align: center;
+}
+
+/* General dice CSS */
 .dice-container {
   display: flex;
   justify-content: center;

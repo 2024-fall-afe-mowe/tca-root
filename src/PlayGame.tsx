@@ -10,7 +10,7 @@ export const PlayGame = () => {
     const [dice2, setDice2] = useState(0);
 
     // Function to generate random numbers between 0 and 3 for each dice
-      const rollDice = () => {
+    const rollDice = () => {
       const newDice1 = Math.floor(Math.random() * 4); // Random number between 0 and 3
       const newDice2 = Math.floor(Math.random() * 4); // Random number between 0 and 3
       setDice1(newDice1);
@@ -20,6 +20,16 @@ export const PlayGame = () => {
     return (
       <div className="App">
         <h1 className="text-2xl font-bold mb-3">Play Game</h1>
+
+        {/* Attacker and Defender Labels */}
+        <div className="dice-label-container">
+          <div className="dice-label-left">
+            <p className="label">Attacker</p>
+          </div>
+          <div className="dice-label-right">
+            <p className="label">Defender</p>
+          </div>
+        </div>
 
         {/* Dice Display */}
         <div className="dice-container">
@@ -36,10 +46,10 @@ export const PlayGame = () => {
           Roll Dice
         </button>
 
-
-        <button className = "btn btn-secondary mb-3"
-        // Return to Home
-        onClick={() => nav("/")}>Back to Home</button>
+        {/* Roll Dice Button */}
+        <button className = "btn btn-secondary mb-3" onClick={() => nav("/")}>
+          Back to Home
+        </button>
       </div>
     );
 };
