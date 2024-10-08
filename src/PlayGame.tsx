@@ -10,6 +10,7 @@ export const PlayGame = () => {
     const [dice2, setDice2] = useState(0);
     const [attacker, setAttacker] = useState('');
     const [defender, setDefender] = useState('');
+    const [winner, setWinner] = useState(''); // State to store the winner
 
     // Function to generate random numbers between 0 and 3 for each dice
     const rollDice = () => {
@@ -17,6 +18,15 @@ export const PlayGame = () => {
       const newDice2 = Math.floor(Math.random() * 4); // Random number between 0 and 3
       setDice1(newDice1);
       setDice2(newDice2);
+
+      // Determine the winner
+      if (newDice1 > newDice2) {
+        setWinner(attacker);  // Attacker wins
+      } else if (newDice2 > newDice1) {
+        setWinner(defender);  // Defender wins
+      } else {
+        setWinner(attacker);  // Ties go to the attacker
+      }
     };
 
     return (
@@ -77,6 +87,13 @@ export const PlayGame = () => {
             </select>
           </div>
         </div>
+
+        {/* Display the winner */}
+        {winner && (
+          <div className="winner-announcement">
+            <h2>Winning faction: {winner}</h2>
+          </div>
+        )}
 
         {/* Roll Dice Button */}
         <button className="btn btn-primary mb-3" onClick={rollDice}>
