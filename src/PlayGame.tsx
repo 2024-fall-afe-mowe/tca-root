@@ -15,27 +15,44 @@ export const PlayGame = () => {
 
     // Function to generate random numbers between 0 and 3 for each dice
     const rollDice = () => {
-    let newDice1 = Math.floor(Math.random() * 4); // Random number between 0 and 3
-    let newDice2 = Math.floor(Math.random() * 4); // Random number between 0 and 3
+      let newDice1 = Math.floor(Math.random() * 4); // Random number between 0 and 3
+      let newDice2 = Math.floor(Math.random() * 4); // Random number between 0 and 3
 
-    // Check if the defender is Woodland Alliance; if so, they get the higher roll
-    if (defender === 'Woodland Alliance') {
-      if (newDice1 > newDice2) {
-        [newDice1, newDice2] = [newDice2, newDice1]; // Swap so Woodland Alliance (defender) gets higher roll
+      // Check if the defender is Woodland Alliance; if so, they get the higher roll
+      if (defender === 'Woodland Alliance') {
+        if (newDice1 > newDice2) {
+          [newDice1, newDice2] = [newDice2, newDice1]; // Swap so Woodland Alliance (defender) gets higher roll
+        }
+      } else {
+        // Otherwise, ensure the attacker gets the higher roll
+        if (newDice2 > newDice1) {
+          [newDice1, newDice2] = [newDice2, newDice1]; // Swap dice values so attacker gets higher roll
+        }
       }
-    } else {
-      // Otherwise, ensure the attacker gets the higher roll
-      if (newDice2 > newDice1) {
-        [newDice1, newDice2] = [newDice2, newDice1]; // Swap dice values so attacker gets higher roll
-      }
+
+      setDice1(newDice1);
+      setDice2(newDice2);
+
+      // Set the number of hits for each faction
+      setAttackerHits(newDice1); // Attacker gets the higher roll
+      setDefenderHits(newDice2); // Defender gets the lower roll
+    };
+
+
+   // Function to get the color based on the faction name
+   const getFactionColor = (faction: string): string => {
+    switch (faction) {
+      case 'Marquise de Cat':
+        return 'orange';
+      case 'Eyrie Dynasties':
+        return 'royalblue';
+      case 'Woodland Alliance':
+        return '#4CAF50'; 
+      case 'Vagabond':
+        return 'gray';
+      default:
+        return 'black'; // Default color if no faction is selected
     }
-
-    setDice1(newDice1);
-    setDice2(newDice2);
-
-    // Set the number of hits for each faction
-    setAttackerHits(newDice1); // Attacker gets the higher roll
-    setDefenderHits(newDice2); // Defender gets the lower roll
   };
 
   return (
@@ -101,14 +118,14 @@ export const PlayGame = () => {
       <div className="hits-display">
         {attackerHits !== null && defenderHits !== null && (
           <>
-          <p>
-             {attacker} gets <strong>{attackerHits}</strong> hits
-          </p>
-          <p>
-             {defender} gets <strong>{defenderHits}</strong> hits
-          </p>
+            <p>
+              <strong><span style={{ color: getFactionColor(attacker) }}>{attacker}</span></strong> gets <strong>{attackerHits}</strong> hits
+            </p>
+            <p>
+              <strong><span style={{ color: getFactionColor(defender) }}>{defender}</span></strong> gets <strong>{defenderHits}</strong> hits
+            </p>
           </>
-      )}
+        )}
       </div>
 
 
