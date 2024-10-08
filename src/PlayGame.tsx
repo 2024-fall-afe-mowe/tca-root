@@ -3,24 +3,31 @@ import { useNavigate } from 'react-router-dom';
 
 export const PlayGame = () => {
 
-  const nav = useNavigate();
+    const nav = useNavigate();
 
-  // States to store the values of both dice
-  const [dice1, setDice1] = useState(0);
-  const [dice2, setDice2] = useState(0);
-  const [attacker, setAttacker] = useState('');
-  const [defender, setDefender] = useState('');
-  const [attackerHits, setAttackerHits] = useState<null | number>(null); // Store hits for attacker
-  const [defenderHits, setDefenderHits] = useState<null | number>(null); // Store hits for defender
+    // States to store the values of both dice
+    const [dice1, setDice1] = useState(0);
+    const [dice2, setDice2] = useState(0);
+    const [attacker, setAttacker] = useState('');
+    const [defender, setDefender] = useState('');
+    const [attackerHits, setAttackerHits] = useState<null | number>(null); // Store hits for attacker
+    const [defenderHits, setDefenderHits] = useState<null | number>(null); // Store hits for defender
 
-  // Function to generate random numbers between 0 and 3 for each dice
-  const rollDice = () => {
+    // Function to generate random numbers between 0 and 3 for each dice
+    const rollDice = () => {
     let newDice1 = Math.floor(Math.random() * 4); // Random number between 0 and 3
     let newDice2 = Math.floor(Math.random() * 4); // Random number between 0 and 3
 
-    // Ensure attacker gets the higher value
-    if (newDice2 > newDice1) {
-      [newDice1, newDice2] = [newDice2, newDice1];  // Swap dice values so attacker gets higher roll
+    // Check if the defender is Woodland Alliance; if so, they get the higher roll
+    if (defender === 'Woodland Alliance') {
+      if (newDice1 > newDice2) {
+        [newDice1, newDice2] = [newDice2, newDice1]; // Swap so Woodland Alliance (defender) gets higher roll
+      }
+    } else {
+      // Otherwise, ensure the attacker gets the higher roll
+      if (newDice2 > newDice1) {
+        [newDice1, newDice2] = [newDice2, newDice1]; // Swap dice values so attacker gets higher roll
+      }
     }
 
     setDice1(newDice1);
