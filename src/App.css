@@ -110,6 +110,10 @@ select {
   border-radius: 6px;
 }
 
+.hits-display {
+  margin-bottom: 1rem;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
