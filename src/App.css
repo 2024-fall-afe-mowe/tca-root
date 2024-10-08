@@ -45,7 +45,7 @@
   justify-content: space-between;
   width: 250px;
   margin: 0 auto;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 /* Label styles for Attacker and Defender */
@@ -83,6 +83,32 @@
   font-weight: bold;
 }
 
+/* Dropdown container */
+.dropdown-container {
+  display: flex;
+  justify-content: space-between;
+  width: 360px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.dropdown-left, .dropdown-right {
+  width: 160px; /* Adjust width to comfortably fit faction names */
+}
+
+label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 5px;
+}
+
+select {
+  width: 100%;
+  padding: 5px;
+  font-size: 1rem;
+  border: 2px solid black;
+  border-radius: 6px;
+}
 
 @tailwind base;
 @tailwind components;
