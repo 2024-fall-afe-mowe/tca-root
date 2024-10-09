@@ -5,7 +5,9 @@ export const PlayGame = () => {
 
     const nav = useNavigate();
 
-    // States to store the values of both dice
+    // States to store the initial dice rolls and the final hits
+    const [initialDice1, setInitialDice1] = useState(0);
+    const [initialDice2, setInitialDice2] = useState(0);
     const [dice1, setDice1] = useState(0);
     const [dice2, setDice2] = useState(0);
     const [attacker, setAttacker] = useState('');
@@ -18,11 +20,15 @@ export const PlayGame = () => {
       let newDice1 = Math.floor(Math.random() * 4); // Random number between 0 and 3
       let newDice2 = Math.floor(Math.random() * 4); // Random number between 0 and 3
 
-      // Check if the defender is Woodland Alliance; if so, they get the higher roll
-      if (defender === 'Woodland Alliance') {
-        if (newDice1 > newDice2) {
-          [newDice1, newDice2] = [newDice2, newDice1]; // Swap so Woodland Alliance (defender) gets higher roll
-        }
+    // Save initial rolls before any swapping
+    setInitialDice1(newDice1);
+    setInitialDice2(newDice2);
+
+    // Check if the defender is Woodland Alliance; if so, they get the higher roll
+    if (defender === 'Woodland Alliance') {
+      if (newDice1 > newDice2) {
+        [newDice1, newDice2] = [newDice2, newDice1]; // Swap so Woodland Alliance (defender) gets higher roll
+      }
       } else {
         // Otherwise, ensure the attacker gets the higher roll
         if (newDice2 > newDice1) {
@@ -69,13 +75,13 @@ export const PlayGame = () => {
         </div>
       </div>
 
-      {/* Dice Display */}
+      {/* Dice Display: initial rolls */}
       <div className="dice-container">
         <div className="dice">
-          <p className="dice-value">{dice1}</p>
+          <p className="dice-value">{initialDice1}</p> {/* Show initial roll for dice1 */}
         </div>
         <div className="dice">
-          <p className="dice-value">{dice2}</p>
+          <p className="dice-value">{initialDice2}</p> {/* Show initial roll for dice2 */}
         </div>
       </div>
 
@@ -115,7 +121,7 @@ export const PlayGame = () => {
       </div>
 
       {/* Display the number of hits */}
-      <div className="hits-display">
+      <div className="hits-display text-2xl mb-3">
         {attackerHits !== null && defenderHits !== null && (
           <>
             <p>
