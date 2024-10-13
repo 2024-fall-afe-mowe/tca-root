@@ -15,6 +15,9 @@ export const PlayGame = () => {
     const [attackerHits, setAttackerHits] = useState<null | number>(null); // Store hits for attacker
     const [defenderHits, setDefenderHits] = useState<null | number>(null); // Store hits for defender
 
+    // State for tracking victory points
+    const [victoryPoints, setVictoryPoints] = useState(0);
+
     // Function to generate random numbers between 0 and 3 for each dice
     const rollDice = () => {
       let newDice1 = Math.floor(Math.random() * 4); // Random number between 0 and 3
@@ -60,6 +63,10 @@ export const PlayGame = () => {
         return 'black'; // Default color if no faction is selected
     }
   };
+
+  // Handlers to increment and decrement victory points
+  const incrementPoints = () => setVictoryPoints(victoryPoints + 1);
+  const decrementPoints = () => setVictoryPoints(victoryPoints > 0 ? victoryPoints - 1 : 0); // Prevent points from going negative
 
   return (
     <div className="App">
@@ -139,6 +146,36 @@ export const PlayGame = () => {
       <button className="btn btn-primary mb-3" onClick={rollDice}>
         Roll Dice
       </button>
+
+      <br/>
+      <br/>
+
+      {/* Total Victory Points and Counter */}
+      <div className="victory-points-container text-center mb-3">
+        <h2 className="text-2xl font-bold">Total Victory Points:</h2>
+        <div className="flex items-center justify-center space-x-4 mt-2">
+          {/* Minus Button*/}
+          <button
+            className="btn btn-circle bg-red-500 text-white text-3xl"
+            onClick={decrementPoints}
+          >
+            -
+          </button>
+
+          {/* Victory Points Display */}
+          <span className="text-2xl font-bold">{victoryPoints}</span>
+
+          {/* Plus Button*/}
+          <button
+            className="btn btn-circle bg-green-500 text-white text-3xl"
+            onClick={incrementPoints}
+          >
+            +
+          </button>
+        </div>
+      </div>
+
+      <br/>
 
       {/* Back to Home Button */}
       <button className="btn btn-secondary mb-3" onClick={() => nav("/")}>
