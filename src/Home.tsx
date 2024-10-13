@@ -7,7 +7,7 @@ export const Home = () => {
       <h1 className="text-3xl font-bold underline">ROOT</h1>
       <h2 className="text-2xl">a companion app by TSA Games</h2>
       <br />
-      <Link to="/play" className="btn btn-secondary">
+      <Link to="/play" className="btn btn-secondary font-bold">
         Play Game
       </Link>
       <br />

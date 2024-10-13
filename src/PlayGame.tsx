@@ -143,7 +143,7 @@ export const PlayGame = () => {
 
 
       {/* Roll Dice Button */}
-      <button className="btn btn-primary mb-3" onClick={rollDice}>
+      <button className="btn btn-primary mb-3 font-bold" onClick={rollDice}>
         Roll Dice
       </button>
 
@@ -178,7 +178,7 @@ export const PlayGame = () => {
       <br/>
 
       {/* Back to Home Button */}
-      <button className="btn btn-secondary mb-3" onClick={() => nav("/")}>
+      <button className="btn btn-secondary mb-3 font-bold" onClick={() => nav("/")}>
         Back to Home
       </button>
     </div>
