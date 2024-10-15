@@ -70,7 +70,12 @@ export const PlayGame = () => {
 
   return (
     <div className="App">
-      <h1 className="text-2xl font-bold mb-3">Play Game</h1>
+      <h1 className="text-2xl font-bold mb-3 mt-3">Play Game</h1>
+
+      {/* Dice Roller Simulator */}
+      <div className="card bg-base-100 shadow-xl card-bordered my-6 p-3">
+        <div className="card-body">
+          <h2 className="text-2xl font-bold text-center">Battle Roller</h2>
 
       {/* Attacker and Defender Labels */}
       <div className="dice-label-container">
@@ -143,20 +148,28 @@ export const PlayGame = () => {
 
 
       {/* Roll Dice Button */}
-      <button className="btn btn-primary mb-3 font-bold" onClick={rollDice}>
-        Roll Dice
-      </button>
+      <div className="text-center">
+        <button className="btn btn-primary font-bold" style={{ width: '120px' }} onClick={rollDice}>
+          Roll Dice
+       </button>
+      </div>
 
       <br/>
       <br/>
+
+      </div>
+      </div>
 
       {/* Total Victory Points and Counter */}
-      <div className="victory-points-container text-center mb-3">
-        <h2 className="text-2xl font-bold">Total Victory Points:</h2>
+      <div className="card bg-base-100 shadow-xl flex justify-center my-6 p-3">
+       <div className="card-body">
+        <h2 className="text-center text-2xl font-bold">Total Victory Points</h2>
         <div className="flex items-center justify-center space-x-4 mt-2">
+
           {/* Minus Button*/}
           <button
-            className="btn btn-circle bg-red-500 text-white text-3xl"
+            className="btn btn-circle text-white text-3xl"
+            style={{ backgroundColor: '#ff7f7f' }}
             onClick={decrementPoints}
           >
             -
@@ -167,12 +180,14 @@ export const PlayGame = () => {
 
           {/* Plus Button*/}
           <button
-            className="btn btn-circle bg-green-500 text-white text-3xl"
+            className="btn btn-circle text-white text-2xl"
+            style={{ backgroundColor: '#90ee90' }}
             onClick={incrementPoints}
           >
             +
           </button>
         </div>
+      </div>
       </div>
 
       <br/>

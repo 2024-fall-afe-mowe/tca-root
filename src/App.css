@@ -114,6 +114,18 @@ select {
   margin-bottom: 1rem;
 }
 
+.card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
+  transition: box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.card {
+  width: 85%; /* Set width to 50% of the parent */
+  max-width: 700px; /* Optional: limit the maximum width */
+  margin: auto; /* Center the card if width is less than the parent */
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
