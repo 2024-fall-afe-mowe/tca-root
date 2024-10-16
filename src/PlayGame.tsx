@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const PlayGame = () => {
 
     const nav = useNavigate();
 
-    // States to store the initial dice rolls and the final hits
+    // States to store the initial dice rolls and final hits
     const [initialDice1, setInitialDice1] = useState(0);
     const [initialDice2, setInitialDice2] = useState(0);
-    const [dice1, setDice1] = useState(0);
-    const [dice2, setDice2] = useState(0);
     const [attacker, setAttacker] = useState('');
     const [defender, setDefender] = useState('');
     const [attackerHits, setAttackerHits] = useState<null | number>(null); // Store hits for attacker
@@ -38,9 +36,6 @@ export const PlayGame = () => {
           [newDice1, newDice2] = [newDice2, newDice1]; // Swap dice values so attacker gets higher roll
         }
       }
-
-      setDice1(newDice1);
-      setDice2(newDice2);
 
       // Set the number of hits for each faction
       setAttackerHits(newDice1); // Attacker gets the higher roll
