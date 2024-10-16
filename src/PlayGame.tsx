@@ -144,7 +144,7 @@ export const PlayGame = () => {
 
       {/* Roll Dice Button */}
       <div className="text-center">
-        <button className="btn btn-primary font-bold" style={{ width: '120px' }} onClick={rollDice}>
+        <button className="btn btn-primary text-white font-bold" style={{ width: '120px' }} onClick={rollDice}>
           Roll Dice
        </button>
       </div>
@@ -188,7 +188,7 @@ export const PlayGame = () => {
       <br/>
 
       {/* Back to Home Button */}
-      <button className="btn btn-secondary mb-3 font-bold" onClick={() => nav("/")}>
+      <button className="btn btn-info text-white mb-3 font-bold" onClick={() => nav("/")}>
         Back to Home
       </button>
     </div>

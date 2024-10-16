@@ -1,14 +1,30 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+// Define the structure of a "player" object
+interface Player {
+  name: string;
+  wins: number;
+  losses: number;
+  pct: string;
+}
+
 export const Home = () => {
+  const [players, setPlayers] = useState<Player[]>([]);
+
+  // Fetch players from localStorage on component mount
+  useEffect(() => {
+    const storedPlayers = JSON.parse(localStorage.getItem("players") || "[]");
+    setPlayers(storedPlayers);
+  }, []);
+
   return (
     <div className="App">
-      <h1 className="text-3xl font-bold underline">ROOT</h1>
+      <h1 className="text-3xl font-bold underline mt-3">ROOT</h1>
       <h2 className="text-2xl">a companion app by TSA Games</h2>
       <br />
-      <Link to="/play" className="btn btn-secondary font-bold">
-        Play Game
+      <Link to="/setup" className="btn btn-secondary font-bold">
+        Go to Setup
       </Link>
       <br />
       <br />
@@ -24,33 +40,25 @@ export const Home = () => {
             <div className="text-center font-bold">Pct</div>
           </div>
 
-          {/* Player Row Example */}
-          <div className="grid grid-cols-4 gap-4 mt-2 border-b border-gray-300 pb-2">
-            <div className="text-left">Harry</div>
-            <div className="text-center">10</div>
-            <div className="text-center">5</div>
-            <div className="text-center">.667</div>
-          </div>
-          <div className="grid grid-cols-4 gap-4 mt-2 border-b border-gray-300 pb-2">
-            <div className="text-left">Hermione</div>
-            <div className="text-center">8</div>
-            <div className="text-center">7</div>
-            <div className="text-center">.553</div>
-          </div>
-          <div className="grid grid-cols-4 gap-4 mt-2 border-b border-gray-300 pb-2">
-            <div className="text-left">Ron</div>
-            <div className="text-center">5</div>
-            <div className="text-center">10</div>
-            <div className="text-center">.333</div>
-          </div>
+          {players.map((player, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-4 gap-4 mt-2 border-b border-gray-300 pb-2"
+            >
+              <div className="text-left">{player.name}</div>
+              <div className="text-center">{player.wins}</div>
+              <div className="text-center">{player.losses}</div>
+              <div className="text-center">{player.pct}</div>
+            </div>
+          ))}
         </div>
       </div>
 
-      <br />
-      <br />
+      <div className="my-10"></div>
 
-      {/* Fun-Fact Stats Section */}
-      <h1 className="text-3xl font-bold mb-4">Fun-Fact Stats</h1>
+      
+    {/* Fun-Fact Stats Section */}
+    <h1 className="text-3xl font-bold mb-4">Fun-Fact Stats</h1>
       <div className="stats stats-vertical lg:stats-horizontal shadow">
         <div className="stat">
           <div className="stat-title">Longest Game Played</div>
@@ -75,6 +83,7 @@ export const Home = () => {
           <div className="stat-desc">34 VP</div>
         </div>
       </div>
+
     </div>
   );
 };
