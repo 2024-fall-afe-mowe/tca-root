@@ -12,6 +12,44 @@ export const Home = () => {
       </Link>
       <br />
       <br />
+
+      {/* Leaderboard Section */}
+      <h1 className="text-3xl font-bold mb-4">Leaderboard</h1>
+      <div className="card bg-base-100 shadow-xl">
+        <div className="card-body">
+          <div className="grid grid-cols-4 gap-4">
+            <div className="text-left font-bold">Player</div>
+            <div className="text-center font-bold">W</div>
+            <div className="text-center font-bold">L</div>
+            <div className="text-center font-bold">AVG</div>
+          </div>
+
+          {/* Player Row Example */}
+          <div className="grid grid-cols-4 gap-4 mt-2">
+            <div className="text-left">Harry</div>
+            <div className="text-center">10</div>
+            <div className="text-center">5</div>
+            <div className="text-center">66%</div>
+          </div>
+          <div className="grid grid-cols-4 gap-4 mt-2">
+            <div className="text-left">Hermione</div>
+            <div className="text-center">8</div>
+            <div className="text-center">7</div>
+            <div className="text-center">53%</div>
+          </div>
+          <div className="grid grid-cols-4 gap-4 mt-2">
+            <div className="text-left">Ron</div>
+            <div className="text-center">5</div>
+            <div className="text-center">10</div>
+            <div className="text-center">33%</div>
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <br />
+
+      {/* Fun-Fact Stats Section */}
       <h1 className="text-3xl font-bold mb-4">Fun-Fact Stats</h1>
       <div className="stats stats-vertical lg:stats-horizontal shadow">
         <div className="stat">
