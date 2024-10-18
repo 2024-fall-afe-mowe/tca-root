@@ -72,7 +72,7 @@ export const Setup = () => {
       />
 
       {/* Add Player Button */}
-      <button className="btn btn-primary mb-3" onClick={addPlayer}>
+      <button className="btn btn-primary text-white mb-3" onClick={addPlayer}>
         Add Player
       </button>
 

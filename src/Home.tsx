@@ -33,32 +33,39 @@ export const Home = () => {
       <h1 className="text-3xl font-bold mb-4">Leaderboard</h1>
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body">
-          <div className="grid grid-cols-4 gap-4">
-            <div className="text-left font-bold">Player</div>
-            <div className="text-center font-bold">W</div>
-            <div className="text-center font-bold">L</div>
-            <div className="text-center font-bold">Pct</div>
-          </div>
+          {players.length === 0 ? (
+            // Display this message if no players are added
+            <p className="text-center">(Please add new players to view Leaderboard)</p>
+          ) : (
+            <>
+              {/* Show the leaderboard table only if players exist */}
+              <div className="grid grid-cols-4 gap-4">
+                <div className="text-left font-bold">Player</div>
+                <div className="text-center font-bold">W</div>
+                <div className="text-center font-bold">L</div>
+                <div className="text-center font-bold">Pct</div>
+              </div>
 
-          {players.map((player, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-4 gap-4 mt-2 border-b border-gray-300 pb-2"
-            >
-              <div className="text-left">{player.name}</div>
-              <div className="text-center">{player.wins}</div>
-              <div className="text-center">{player.losses}</div>
-              <div className="text-center">{player.pct}</div>
-            </div>
-          ))}
+              {players.map((player, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-4 gap-4 mt-2 border-b border-gray-300 pb-2"
+                >
+                  <div className="text-left">{player.name}</div>
+                  <div className="text-center">{player.wins}</div>
+                  <div className="text-center">{player.losses}</div>
+                  <div className="text-center">{player.pct}</div>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </div>
 
       <div className="my-10"></div>
 
-      
-    {/* Fun-Fact Stats Section */}
-    <h1 className="text-3xl font-bold mb-4">Fun-Fact Stats</h1>
+      {/* Fun-Fact Stats Section */}
+      <h1 className="text-3xl font-bold mb-4">Fun-Fact Stats</h1>
       <div className="stats stats-vertical lg:stats-horizontal shadow">
         <div className="stat">
           <div className="stat-title">Longest Game Played</div>
@@ -83,7 +90,6 @@ export const Home = () => {
           <div className="stat-desc">34 VP</div>
         </div>
       </div>
-
     </div>
   );
 };
