@@ -13,8 +13,17 @@ export const PlayGame = () => {
     const [attackerHits, setAttackerHits] = useState<null | number>(null); // Store hits for attacker
     const [defenderHits, setDefenderHits] = useState<null | number>(null); // Store hits for defender
 
-    // State for tracking victory points
-    const [victoryPoints, setVictoryPoints] = useState(0);
+  // States for tracking victory points for each faction
+  const [marquisePoints, setMarquisePoints] = useState(0);
+  const [eyriePoints, setEyriePoints] = useState(0);
+  const [woodlandPoints, setWoodlandPoints] = useState(0);
+  const [vagabondPoints, setVagabondPoints] = useState(0);
+
+  // Function to handle increment and decrement of victory points for each faction
+  const incrementPoints = (setPoints: React.Dispatch<React.SetStateAction<number>>, points: number) =>
+    setPoints(points + 1);
+  const decrementPoints = (setPoints: React.Dispatch<React.SetStateAction<number>>, points: number) =>
+    setPoints(points > 0 ? points - 1 : 0);
 
     // Function to generate random numbers between 0 and 3 for each dice
     const rollDice = () => {
@@ -58,10 +67,6 @@ export const PlayGame = () => {
         return 'black'; // Default color if no faction is selected
     }
   };
-
-  // Handlers to increment and decrement victory points
-  const incrementPoints = () => setVictoryPoints(victoryPoints + 1);
-  const decrementPoints = () => setVictoryPoints(victoryPoints > 0 ? victoryPoints - 1 : 0); // Prevent points from going negative
 
   return (
     <div className="App">
@@ -148,39 +153,100 @@ export const PlayGame = () => {
           Roll Dice
        </button>
       </div>
-
-      <br/>
-      <br/>
-
       </div>
       </div>
 
-      {/* Total Victory Points and Counter */}
+      {/* Total Victory Points and counter for every faction */}
       <div className="card bg-base-100 shadow-xl flex justify-center my-6 p-3">
-       <div className="card-body">
-        <h2 className="text-center text-2xl font-bold">Total Victory Points</h2>
-        <div className="flex items-center justify-center space-x-4 mt-2">
+        <div className="card-body">
+          <h2 className="text-center text-2xl font-bold mb-4">Total Victory Points</h2>
 
-          {/* Minus Button*/}
-          <button
-            className="btn btn-circle text-white text-3xl"
-            style={{ backgroundColor: '#ff7f7f' }}
-            onClick={decrementPoints}
-          >
-            -
-          </button>
+          {/* Marquise VP */}
+          <div className="flex items-center justify-center space-x-4 mt-2">
+            <h2 className="text-xl font-bold">Marquise de Cat</h2>
+            <div className="flex items-center space-x-2">
+            <button
+              className="btn btn-circle text-white text-3xl"
+              style={{ backgroundColor: '#ff7f7f' }}
+              onClick={() => decrementPoints(setMarquisePoints, marquisePoints)}
+            >
+              -
+            </button>
+            <span className="text-2xl font-bold">{marquisePoints}</span>
+            <button
+              className="btn btn-circle text-white text-2xl"
+              style={{ backgroundColor: '#90ee90' }}
+              onClick={() => incrementPoints(setMarquisePoints, marquisePoints)}
+            >
+              +
+            </button>
+          </div>
+          </div>
 
-          {/* Victory Points Display */}
-          <span className="text-2xl font-bold">{victoryPoints}</span>
+          {/* Eyrie VP */}
+          <div className="flex items-center justify-center space-x-4 mt-2">
+            <h2 className="text-xl font-bold">&nbsp;&nbsp;&nbsp;Eyrie Dynasty</h2>
+            <div className="flex items-center space-x-2">
+            <button
+              className="btn btn-circle text-white text-3xl ml-3"
+              style={{ backgroundColor: '#ff7f7f' }}
+              onClick={() => decrementPoints(setEyriePoints, eyriePoints)}
+            >
+              -
+            </button>
+            <span className="text-2xl font-bold">{eyriePoints}</span>
+            <button
+              className="btn btn-circle text-white text-2xl"
+              style={{ backgroundColor: '#90ee90' }}
+              onClick={() => incrementPoints(setEyriePoints, eyriePoints)}
+            >
+              +
+            </button>
+          </div>
+          </div>
 
-          {/* Plus Button*/}
-          <button
-            className="btn btn-circle text-white text-2xl"
-            style={{ backgroundColor: '#90ee90' }}
-            onClick={incrementPoints}
-          >
-            +
-          </button>
+          {/* Woodland Alliance VP */}
+          <div className="flex items-center justify-center space-x-4 mt-2">
+            <h2 className="text-xl font-bold">&nbsp;&nbsp;Woodland Alliance</h2>
+            <div className="flex items-center space-x-2">
+            <button
+              className="btn btn-circle text-white text-3xl"
+              style={{ backgroundColor: '#ff7f7f' }}
+              onClick={() => decrementPoints(setWoodlandPoints, woodlandPoints)}
+            >
+              -
+            </button>
+            <span className="text-2xl font-bold">{woodlandPoints}</span>
+            <button
+              className="btn btn-circle text-white text-2xl"
+              style={{ backgroundColor: '#90ee90' }}
+              onClick={() => incrementPoints(setWoodlandPoints, woodlandPoints)}
+            >
+              +
+            </button>
+          </div>
+          </div>
+
+          {/* Vagabond VP */}
+          <div className="flex items-center justify-center space-x-4 mt-2">
+            <h2 className="text-xl font-bold">&nbsp;Vagabond</h2>
+            <div className="flex items-center space-x-2">
+            <button
+              className="btn btn-circle text-white text-3xl"
+              style={{ backgroundColor: '#ff7f7f' }}
+              onClick={() => decrementPoints(setVagabondPoints, vagabondPoints)}
+            >
+              -
+            </button>
+            <span className="text-2xl font-bold">{vagabondPoints}</span>
+            <button
+              className="btn btn-circle text-white text-2xl"
+              style={{ backgroundColor: '#90ee90' }}
+              onClick={() => incrementPoints(setVagabondPoints, vagabondPoints)}
+            >
+              +
+            </button>
+          </div>
         </div>
       </div>
       </div>
