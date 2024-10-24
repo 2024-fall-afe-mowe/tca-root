@@ -163,7 +163,7 @@ export const PlayGame = () => {
 
           {/* Marquise VP */}
           <div className="flex items-center justify-center space-x-4 mt-2">
-            <h2 className="text-xl font-bold">Marquise de Cat</h2>
+            <h2 className="text-xl font-bold" style={{ color: 'orange' }}>Marquise de Cat</h2>
             <div className="flex items-center space-x-2">
             <button
               className="btn btn-circle text-white text-3xl"
@@ -185,7 +185,7 @@ export const PlayGame = () => {
 
           {/* Eyrie VP */}
           <div className="flex items-center justify-center space-x-4 mt-2">
-            <h2 className="text-xl font-bold">&nbsp;&nbsp;&nbsp;Eyrie Dynasty</h2>
+            <h2 className="text-xl font-bold" style={{ color: 'royalblue' }}>&nbsp;&nbsp;&nbsp;Eyrie Dynasty</h2>
             <div className="flex items-center space-x-2">
             <button
               className="btn btn-circle text-white text-3xl ml-3"
@@ -207,7 +207,7 @@ export const PlayGame = () => {
 
           {/* Woodland Alliance VP */}
           <div className="flex items-center justify-center space-x-4 mt-2">
-            <h2 className="text-xl font-bold">&nbsp;&nbsp;Woodland Alliance</h2>
+            <h2 className="text-xl font-bold" style={{ color: '#4CAF50' }}>&nbsp;&nbsp;Woodland Alliance</h2>
             <div className="flex items-center space-x-2">
             <button
               className="btn btn-circle text-white text-3xl"
@@ -229,7 +229,7 @@ export const PlayGame = () => {
 
           {/* Vagabond VP */}
           <div className="flex items-center justify-center space-x-4 mt-2">
-            <h2 className="text-xl font-bold">&nbsp;Vagabond</h2>
+            <h2 className="text-xl font-bold" style={{ color: 'gray' }}>&nbsp;Vagabond</h2>
             <div className="flex items-center space-x-2">
             <button
               className="btn btn-circle text-white text-3xl"

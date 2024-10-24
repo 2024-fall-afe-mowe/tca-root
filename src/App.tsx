@@ -6,7 +6,7 @@ import { Home } from './Home';
 import { Setup } from './Setup';
 import { PlayGame } from './PlayGame';
 
-// Create a single hash router for all the routes
+// Hash router for all the routes
 const myRouter = createHashRouter([
   {
     path: "/",
@@ -25,7 +25,7 @@ const myRouter = createHashRouter([
 const App = () => {
   return (
     <div className="App">
-      {/* RouterProvider is the main component handling routing */}
+      {/* main component handling routing */}
       <RouterProvider router={myRouter} />
     </div>
   );
