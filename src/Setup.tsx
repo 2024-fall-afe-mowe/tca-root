@@ -7,13 +7,23 @@ interface Player {
   wins: number;
   losses: number;
   pct: string;
+  faction?: string;
 }
+
+// Define available factions with their corresponding colors
+const factions = [
+  { name: "Marquise de Cat", color: "orange" },
+  { name: "Eyrie Dynasties", color: "royalblue" },
+  { name: "Woodland Alliance", color: "#4CAF50" },
+  { name: "Vagabond", color: "gray" },
+];
 
 export const Setup = () => {
   // Define player's state as an array of "player" objects
   const [playerName, setPlayerName] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]); // State to track selected players
+  const [playerFactions, setPlayerFactions] = useState<{ [key: string]: string }>({}); // Track player factions
   const navigate = useNavigate();
 
   // Load players from localStorage on component mount
@@ -68,6 +78,11 @@ export const Setup = () => {
     );
   };
 
+  // Handle setting a faction for a player
+  const setFactionForPlayer = (playerName: string, faction: string) => {
+    setPlayerFactions((prev) => ({ ...prev, [playerName]: faction }));
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-3 mt-3">Setup</h1>
@@ -111,6 +126,25 @@ export const Setup = () => {
               >
                 Delete
               </button>
+
+              {/* Show faction choices if player is selected */}
+              {selectedPlayers.includes(player.name) && (
+                <div className="ml-6 mt-2">
+                  <h4 className="text-lg">Choose Faction:</h4>
+                  <div className="flex justify-center space-x-4 mt-2 pb-2">
+                    {factions.map((faction) => (
+                      <button
+                        key={faction.name}
+                        className={`btn btn-sm ${playerFactions[player.name] === faction.name ? "btn-secondary" : "btn-outline"}`}
+                        onClick={() => setFactionForPlayer(player.name, faction.name)}
+                      >
+                        {faction.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
             </li>
           ))}
         </ul>
@@ -122,9 +156,14 @@ export const Setup = () => {
       <button
         className="btn btn-secondary font-bold"
         onClick={() => {
-          // Pass selected players when navigating to the play game page
-          navigate("/play", { state: { selectedPlayers } });
-        }}
+        // Pass selected players and their factions when navigating to the play game page
+            const selectedPlayersWithFactions = selectedPlayers.map((name) => ({
+              name,
+              faction: playerFactions[name],
+            }));
+            navigate("/play", { state: { selectedPlayers: selectedPlayersWithFactions } });
+          }}
+          disabled={selectedPlayers.some((name) => !playerFactions[name])} // Disable until all players have factions
       >
         Play Game
       </button>
