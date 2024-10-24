@@ -13,6 +13,7 @@ export const Setup = () => {
   // Define player's state as an array of "player" objects
   const [playerName, setPlayerName] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
+  const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]); // State to track selected players
   const navigate = useNavigate();
 
   // Load players from localStorage on component mount
@@ -58,6 +59,15 @@ export const Setup = () => {
     }
   };
 
+  // Function to handle selecting/deselecting a player
+  const togglePlayerSelection = (playerName: string) => {
+    setSelectedPlayers((prev) =>
+      prev.includes(playerName)
+        ? prev.filter((name) => name !== playerName) // Deselect if already selected
+        : [...prev, playerName] // Select if not selected
+    );
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-3 mt-3">Setup</h1>
@@ -87,6 +97,13 @@ export const Setup = () => {
         <ul>
           {players.map((player, index) => (
             <li key={index} className="mb-2">
+              {/* Checkbox to select player */}
+              <input
+                  type="checkbox"
+                  className="mr-2"
+                  checked={selectedPlayers.includes(player.name)}
+                  onChange={() => togglePlayerSelection(player.name)}
+                />
               <span className="text-lg mr-2">{player.name}</span>
               <button
                 className="btn btn-outline btn-error btn-sm ml-2"
@@ -104,7 +121,10 @@ export const Setup = () => {
       {/* Start Playing Button */}
       <button
         className="btn btn-secondary font-bold"
-        onClick={() => navigate("/play")}
+        onClick={() => {
+          // Pass selected players when navigating to the play game page
+          navigate("/play", { state: { selectedPlayers } });
+        }}
       >
         Play Game
       </button>
