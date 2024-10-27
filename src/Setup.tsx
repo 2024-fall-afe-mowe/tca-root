@@ -83,6 +83,16 @@ export const Setup = () => {
     setPlayerFactions((prev) => ({ ...prev, [playerName]: faction }));
   };
 
+   // Function to choose random factions for selected players
+   const chooseRandomFactions = () => {
+    const shuffledFactions = [...factions].sort(() => Math.random() - 0.5);
+    const newPlayerFactions = { ...playerFactions };
+    selectedPlayers.forEach((player, index) => {
+      newPlayerFactions[player] = shuffledFactions[index % shuffledFactions.length].name;
+    });
+    setPlayerFactions(newPlayerFactions);
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-3 mt-3">Setup</h1>
@@ -131,12 +141,22 @@ export const Setup = () => {
               {selectedPlayers.includes(player.name) && (
                 <div className="ml-6 mt-2">
                   <h4 className="text-lg">Choose Faction:</h4>
-                  <div className="flex justify-center space-x-4 mt-2 pb-2">
+                  <div className="flex justify-center space-x-4 mt-2 pb-4">
                     {factions.map((faction) => (
                       <button
                         key={faction.name}
-                        className={`btn btn-sm ${playerFactions[player.name] === faction.name ? "btn-secondary" : "btn-outline"}`}
+                        className={`btn btn-sm ${playerFactions[player.name] === faction.name ? "btn-secondary text-white font-bold" : "btn-outline hover:btn-accent hover:text-white"}`}
                         onClick={() => setFactionForPlayer(player.name, faction.name)}
+                        style={{
+                          color: playerFactions[player.name] === faction.name ? "white" : faction.color,
+                          borderWidth: "2px",
+                        }}
+                        onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+                          e.currentTarget.style.color = "white";
+                        }}
+                        onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+                          e.currentTarget.style.color = playerFactions[player.name] === faction.name ? "white" : faction.color;
+                        }}
                       >
                         {faction.name}
                       </button>
@@ -148,6 +168,18 @@ export const Setup = () => {
             </li>
           ))}
         </ul>
+      )}
+
+      {/* Choose Random Button */}
+      {selectedPlayers.length > 0 && (
+      <div className="flex justify-center my-5">
+      <button
+        className="btn btn-accent font-bold text-white"
+        onClick={chooseRandomFactions}
+      >
+        Choose Random
+      </button>
+      </div>
       )}
 
       <div className="my-10"></div>
