@@ -71,12 +71,20 @@ export const Setup = () => {
 
   // Function to handle selecting/deselecting a player
   const togglePlayerSelection = (playerName: string) => {
-    setSelectedPlayers((prev) =>
-      prev.includes(playerName)
-        ? prev.filter((name) => name !== playerName) // Deselect if already selected
-        : [...prev, playerName] // Select if not selected
-    );
+  // Check if the player is already selected
+  if (selectedPlayers.includes(playerName)) {
+    // Deselect if already selected
+    setSelectedPlayers((prev) => prev.filter((name) => name !== playerName));
+  } else {
+    // Allow selection only if less than four players are selected
+    if (selectedPlayers.length < 4) {
+      setSelectedPlayers((prev) => [...prev, playerName]);
+    } else {
+      alert("You can only select up to 4 players."); // Alert message if trying to select more than four players
+    }
+  }
   };
+
 
   // Handle setting a faction for a player
   const setFactionForPlayer = (playerName: string, faction: string) => {
