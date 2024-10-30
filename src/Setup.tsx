@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "./logo.png";
 
 // Define a type for "player" objects
 interface Player {
@@ -19,12 +20,14 @@ const factions = [
 ];
 
 export const Setup = () => {
+
+  const navigate = useNavigate();
+  
   // Define player's state as an array of "player" objects
   const [playerName, setPlayerName] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]); // State to track selected players
   const [playerFactions, setPlayerFactions] = useState<{ [key: string]: string }>({}); // Track player factions
-  const navigate = useNavigate();
 
   // Load players from localStorage on component mount
   useEffect(() => {
@@ -103,6 +106,12 @@ export const Setup = () => {
 
   return (
     <div>
+      
+      {/* Navbar with Centered Logo */}
+      <nav className="navbar bg-base-100 justify-center">
+        <img src={logo} alt="Logo" className="h-12" />
+      </nav>
+
       <h1 className="text-3xl font-bold mb-3 mt-3">Setup</h1>
 
       {/* Input field for adding a new player */}
@@ -148,7 +157,7 @@ export const Setup = () => {
               {/* Show faction choices if player is selected */}
               {selectedPlayers.includes(player.name) && (
                 <div className="ml-6 mt-2">
-                  <h4 className="text-lg">Choose Faction:</h4>
+                  <h4 className="text-lg">choose faction:</h4>
                   <div className="flex justify-center space-x-4 mt-2 pb-4">
                     {factions.map((faction) => (
                       <button

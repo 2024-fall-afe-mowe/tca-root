@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import logo from "./logo.png";
 
 export const PlayGame = () => {
 
@@ -70,6 +71,12 @@ export const PlayGame = () => {
 
   return (
     <div className="App">
+
+      {/* Navbar with Centered Logo */}
+      <nav className="navbar bg-base-100 justify-center">
+        <img src={logo} alt="Logo" className="h-12" />
+      </nav>
+
       <h1 className="text-2xl font-bold mb-3 mt-3">Play Game</h1>
 
       {/* Dice Roller Simulator */}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import logo from "./logo.png";
 
 // Define the structure of a "player" object
 interface Player {
@@ -20,9 +21,14 @@ export const Home = () => {
 
   return (
     <div className="App">
-      <h1 className="text-3xl font-bold underline mt-3">ROOT</h1>
+
+      {/* Navbar with Centered Logo */}
+      <nav className="navbar bg-base-100 justify-center">
+        <img src={logo} alt="Logo" className="h-12" />
+      </nav>
       <h2 className="text-2xl">a companion app by TSA Games</h2>
       <br />
+      
       <Link to="/setup" className="btn btn-secondary font-bold">
         Go to Setup
       </Link>
