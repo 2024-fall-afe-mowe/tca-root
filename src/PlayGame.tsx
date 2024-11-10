@@ -7,66 +7,66 @@ export const PlayGame = () => {
     const nav = useNavigate();
 
     // States to store the initial dice rolls and final hits
-    const [initialDice1, setInitialDice1] = useState(0);
-    const [initialDice2, setInitialDice2] = useState(0);
-    const [attacker, setAttacker] = useState('');
-    const [defender, setDefender] = useState('');
+    const [initialDice1, setInitialDice1] = useState(0); // store initial dice roll for attacker
+    const [initialDice2, setInitialDice2] = useState(0); // store initial dice rool for defender
+    const [attacker, setAttacker] = useState(''); // store faction selection values
+    const [defender, setDefender] = useState(''); // store faction selection values
     const [attackerHits, setAttackerHits] = useState<null | number>(null); // Store hits for attacker
     const [defenderHits, setDefenderHits] = useState<null | number>(null); // Store hits for defender
 
-  // States for tracking victory points for each faction
-  const [marquisePoints, setMarquisePoints] = useState(0);
-  const [eyriePoints, setEyriePoints] = useState(0);
-  const [woodlandPoints, setWoodlandPoints] = useState(0);
-  const [vagabondPoints, setVagabondPoints] = useState(0);
+    // States for tracking victory points for each faction
+    const [marquisePoints, setMarquisePoints] = useState(0);
+    const [eyriePoints, setEyriePoints] = useState(0);
+    const [woodlandPoints, setWoodlandPoints] = useState(0);
+    const [vagabondPoints, setVagabondPoints] = useState(0);
 
-  // Function to handle increment and decrement of victory points for each faction
-  const incrementPoints = (setPoints: React.Dispatch<React.SetStateAction<number>>, points: number) =>
-    setPoints(points + 1);
-  const decrementPoints = (setPoints: React.Dispatch<React.SetStateAction<number>>, points: number) =>
-    setPoints(points > 0 ? points - 1 : 0);
+    // Function to handle increment and decrement of victory points for each faction
+    const incrementPoints = (setPoints: React.Dispatch<React.SetStateAction<number>>, points: number) =>
+      setPoints(points + 1);
+    const decrementPoints = (setPoints: React.Dispatch<React.SetStateAction<number>>, points: number) =>
+      setPoints(points > 0 ? points - 1 : 0);
 
     // Function to generate random numbers between 0 and 3 for each dice
     const rollDice = () => {
       let newDice1 = Math.floor(Math.random() * 4); // Random number between 0 and 3
       let newDice2 = Math.floor(Math.random() * 4); // Random number between 0 and 3
 
-    // Save initial rolls before any swapping
-    setInitialDice1(newDice1);
-    setInitialDice2(newDice2);
+      // Save initial rolls before any swapping
+      setInitialDice1(newDice1);
+      setInitialDice2(newDice2);
 
-    // Check if the defender is Woodland Alliance; if so, they get the higher roll
-    if (defender === 'Woodland Alliance') {
-      if (newDice1 > newDice2) {
-        [newDice1, newDice2] = [newDice2, newDice1]; // Swap so Woodland Alliance (defender) gets higher roll
-      }
-      } else {
-        // Otherwise, ensure the attacker gets the higher roll
-        if (newDice2 > newDice1) {
-          [newDice1, newDice2] = [newDice2, newDice1]; // Swap dice values so attacker gets higher roll
+      // Check if the defender is Woodland Alliance; if so, they get the higher roll
+      if (defender === 'Woodland Alliance') {
+        if (newDice1 > newDice2) {
+          [newDice1, newDice2] = [newDice2, newDice1]; // Swap so Woodland Alliance (defender) gets higher roll
         }
-      }
+        } else {
+          // Otherwise, ensure the attacker gets the higher roll
+          if (newDice2 > newDice1) {
+            [newDice1, newDice2] = [newDice2, newDice1]; // Swap dice values so attacker gets higher roll
+          }
+        }
 
-      // Set the number of hits for each faction
-      setAttackerHits(newDice1); // Attacker gets the higher roll
-      setDefenderHits(newDice2); // Defender gets the lower roll
+        // Set the number of hits for each faction
+        setAttackerHits(newDice1); // Attacker gets the higher roll
+        setDefenderHits(newDice2); // Defender gets the lower roll
     };
 
 
-   // Function to get the color based on the faction name
-   const getFactionColor = (faction: string): string => {
-    switch (faction) {
-      case 'Marquise de Cat':
-        return 'orange';
-      case 'Eyrie Dynasties':
-        return 'royalblue';
-      case 'Woodland Alliance':
-        return '#4CAF50'; 
-      case 'Vagabond':
-        return 'gray';
-      default:
-        return 'black'; // Default color if no faction is selected
-    }
+    // Function to get the color based on the faction name
+    const getFactionColor = (faction: string): string => {
+      switch (faction) {
+        case 'Marquise de Cat':
+          return 'orange';
+        case 'Eyrie Dynasties':
+          return 'royalblue';
+        case 'Woodland Alliance':
+          return '#4CAF50'; 
+        case 'Vagabond':
+          return 'gray';
+        default:
+          return 'black'; // Default color if no faction is selected
+      }
   };
 
   return (
@@ -259,6 +259,14 @@ export const PlayGame = () => {
       </div>
 
       <br/>
+
+      {/* Game Over Card */}
+      <div className="card bg-base-100 shadow-xl my-6 p-3">
+        <div className="card-body">
+          <h2 className="text-center text-3xl font-bold">Game Over</h2>
+        </div>
+      </div>
+
 
       {/* Back to Home Button */}
       <button className="btn btn-info text-white mb-3 font-bold" onClick={() => nav("/")}>

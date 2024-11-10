@@ -37,7 +37,7 @@
   }
 }
 
-/* CSS for dice roller function */
+/* CSS FOR DICE ROLLER FUNCTION */
 
 /* Dice label container for positioning labels */
 .dice-label-container {
@@ -93,7 +93,7 @@
 }
 
 .dropdown-left, .dropdown-right {
-  width: 160px; /* Adjust width to comfortably fit faction names */
+  width: 160px;
 }
 
 label {
@@ -115,13 +115,13 @@ select {
 }
 
 .card:hover {
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3); /* Darker shadow on hover */
-  transition: box-shadow 0.3s ease; /* Smooth transition */
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease;
 }
 
 .card {
   width: 85%; /* Set width to 50% of the parent */
-  max-width: 700px; /* Optional: limit the maximum width */
+  max-width: 700px;
   margin: auto; /* Center the card if width is less than the parent */
 }
 
