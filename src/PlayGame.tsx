@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from "./logo.png";
+import { useLocation } from "react-router-dom";
 
 export const PlayGame = () => {
+    const [winner, setWinner] = useState<string | null>(null); // For tracking the winner (temporary)
 
     const nav = useNavigate();
 
@@ -67,6 +69,24 @@ export const PlayGame = () => {
         default:
           return 'black'; // Default color if no faction is selected
       }
+  };
+
+  type Player = {
+    name: string;
+    faction: string;
+  };
+  
+
+  {/*Code added to track winner in Game Over section*/}
+  const location = useLocation();
+  const { selectedPlayers }: { selectedPlayers: Player[] } = location.state || { selectedPlayers: [] };
+  
+  // Faction colors mapping
+  const factionColors: { [key: string]: string } = {
+    "Marquise de Cat": "orange",
+    "Eyrie Dynasties": "royalblue",
+    "Woodland Alliance": "#4CAF50",
+    "Vagabond": "gray",
   };
 
   return (
@@ -260,11 +280,44 @@ export const PlayGame = () => {
 
       <br/>
 
-      {/* Game Over Card */}
+      {/* Game Over */}
       <div className="card bg-base-100 shadow-xl my-6 p-3">
         <div className="card-body">
           <h2 className="text-center text-3xl font-bold">Game Over</h2>
+          <div className="flex flex-col items-center space-y-3">
+            {selectedPlayers.map((player, index) => (
+            <button
+            key={index}
+            className="btn text-lg font-bold"
+            style={{
+              backgroundColor: "white",
+              color: factionColors[player.faction],
+              borderColor: factionColors[player.faction],
+            }}
+            onClick={() => setWinner(player.name)}
+          >
+            <span>{player.name} won</span>
+            <span
+              className="ml-2"
+              style={{
+                color: factionColors[player.faction],
+                border: `2px solid ${factionColors[player.faction]}`,
+                padding: "2px 5px",
+                borderRadius: "5px",
+              }}
+            >
+              {player.faction}
+            </span>
+          </button>
+            ))}
+          </div>
         </div>
+         {/* If a winner is clicked, display who won below all players */}
+      {winner && (
+        <div className="text-center text-xl font-semibold mb-2">
+          <p>{winner} is the winner of the game!</p>
+        </div>
+      )}
       </div>
 
 
