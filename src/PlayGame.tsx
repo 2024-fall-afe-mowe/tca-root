@@ -69,14 +69,13 @@ export const PlayGame = () => {
         default:
           return 'black'; // Default color if no faction is selected
       }
-  };
+    };
 
   type Player = {
     name: string;
     faction: string;
   };
   
-
   {/*Code added to track winner in Game Over section*/}
   const location = useLocation();
   const { selectedPlayers }: { selectedPlayers: Player[] } = location.state || { selectedPlayers: [] };
@@ -313,7 +312,7 @@ export const PlayGame = () => {
           </div>
         </div>
          {/* If a winner is clicked, display who won below all players */}
-      {winner && (
+        {winner && (
         <div className="text-center text-xl font-semibold mb-2">
           <p>{winner} is the winner of the game!</p>
         </div>
