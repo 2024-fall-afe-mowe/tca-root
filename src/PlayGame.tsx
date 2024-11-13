@@ -21,11 +21,12 @@ export const PlayGame = () => {
     const [eyriePoints, setEyriePoints] = useState(0);
     const [woodlandPoints, setWoodlandPoints] = useState(0);
     const [vagabondPoints, setVagabondPoints] = useState(0);
+    const [actionsCounter, setActionsCounter] = useState(0);
 
     // Function to handle increment and decrement of victory points for each faction
     const incrementPoints = (setPoints: React.Dispatch<React.SetStateAction<number>>, points: number) =>
       setPoints(points + 1);
-    const decrementPoints = (setPoints: React.Dispatch<React.SetStateAction<number>>, points: number) =>
+    const decrementPoints = (setPoints: React.Dispatch<React.SetStateAction<number>>, points: number) =>  // Ensure points do not go below zero
       setPoints(points > 0 ? points - 1 : 0);
 
     // Function to generate random numbers between 0 and 3 for each dice
@@ -181,6 +182,43 @@ export const PlayGame = () => {
       </div>
       </div>
       </div>
+
+      {/* Resettable actions taken counter */}
+      <div className="card bg-base-100 shadow-xl flex justify-center my-6 p-3">
+        <div className="card-body">
+          <h2 className="text-center text-2xl font-bold mb-4">Actions Taken</h2>
+
+          <div className="flex items-center justify-center space-x-4 mt-2">
+            <div className="flex items-center space-x-2">
+              <button
+                className="btn btn-circle text-white text-3xl"
+                style={{ backgroundColor: '#ff7f7f' }}
+                onClick={() => decrementPoints(setActionsCounter, actionsCounter)}
+              >
+                -
+              </button>
+              <span className="text-2xl font-bold">{actionsCounter}</span>
+              <button
+                className="btn btn-circle text-white text-2xl"
+                style={{ backgroundColor: '#90ee90' }}
+                onClick={() => incrementPoints(setActionsCounter, actionsCounter)}
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+            {/* Reset button */}
+            <div className="flex justify-center mt-4">
+                <button className="btn btn-primary text-white" 
+                        onClick={() => setActionsCounter(0)}>
+                  Reset
+                </button>
+            </div>
+
+        </div>
+      </div>
+
 
       {/* Total Victory Points and counter for every faction */}
       <div className="card bg-base-100 shadow-xl flex justify-center my-6 p-3">
