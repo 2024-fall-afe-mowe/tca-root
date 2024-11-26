@@ -105,6 +105,14 @@ export const Setup = () => {
       setPlayerFactions(newPlayerFactions);
    };
 
+  // Function to check if there are duplicate factions
+  const hasDuplicateFactions = () => {
+    const selectedFactions = selectedPlayers.map((player) => playerFactions[player]);
+    const uniqueFactions = new Set(selectedFactions);
+    return selectedFactions.length !== uniqueFactions.size;
+  };
+
+
   return (
     <div className="App min-h-screen"  data-theme={darkMode ? "dark" : "light"}>
 
@@ -240,7 +248,7 @@ export const Setup = () => {
             }));
             navigate("/play", { state: { selectedPlayers: selectedPlayersWithFactions } });
           }}
-          disabled={selectedPlayers.some((name) => !playerFactions[name])} // Disable until all players have factions
+          disabled={selectedPlayers.some((name) => !playerFactions[name]) || hasDuplicateFactions()} // Disable until all players have factions or if there's duplicates
       >
         Play Game
       </button>
