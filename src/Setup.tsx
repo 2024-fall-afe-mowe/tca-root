@@ -97,13 +97,13 @@ export const Setup = () => {
 
    // Function to choose random factions for selected players
    const chooseRandomFactions = () => {
-    const shuffledFactions = [...factions].sort(() => Math.random() - 0.5);
-    const newPlayerFactions = { ...playerFactions };
-    selectedPlayers.forEach((player, index) => {
-      newPlayerFactions[player] = shuffledFactions[index % shuffledFactions.length].name;
-    });
-    setPlayerFactions(newPlayerFactions);
-  };
+      const shuffledFactions = [...factions].sort(() => Math.random() - 0.5);
+      const newPlayerFactions = { ...playerFactions };
+      selectedPlayers.forEach((player, index) => {
+        newPlayerFactions[player] = shuffledFactions[index % shuffledFactions.length].name;
+      });
+      setPlayerFactions(newPlayerFactions);
+   };
 
   return (
     <div className="App min-h-screen"  data-theme={darkMode ? "dark" : "light"}>
@@ -185,7 +185,7 @@ export const Setup = () => {
               {selectedPlayers.includes(player.name) && (
                 <div className="ml-6 mt-2">
                   <h4 className="text-lg">choose faction:</h4>
-                  <div className="flex justify-center space-x-4 mt-2 pb-4">
+                  <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-2 pb-4">
                     {factions.map((faction) => (
                       <button
                         key={faction.name}
@@ -194,6 +194,7 @@ export const Setup = () => {
                         style={{
                           color: playerFactions[player.name] === faction.name ? "white" : faction.color,
                           borderWidth: "2px",
+                          minWidth: "100px",
                         }}
                         onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
                           e.currentTarget.style.color = "white";
@@ -232,7 +233,7 @@ export const Setup = () => {
       <button
         className="btn btn-secondary font-bold"
         onClick={() => {
-        // Pass selected players and their factions when navigating to the play game page
+        // Pass selected players and their factions when navigating to the PlayGame page
             const selectedPlayersWithFactions = selectedPlayers.map((name) => ({
               name,
               faction: playerFactions[name],

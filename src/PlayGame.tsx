@@ -118,7 +118,8 @@ export const PlayGame = () => {
             </label>
           </div>
       
-      <br/><br/>
+      <br/>
+      <br/>
 
       {/* Navbar with Centered Logo */}
       <nav className="navbar bg-base-100 justify-center">
@@ -127,89 +128,98 @@ export const PlayGame = () => {
 
       <h1 className="text-2xl font-bold mb-3 mt-3">Play Game</h1>
 
-      {/* Dice Roller Simulator */}
-      <div className="card bg-base-100 shadow-xl card-bordered my-6 p-3">
-        <div className="card-body">
-          <h2 className="text-2xl font-bold text-center">Battle Roller</h2>
+          {/* Dice Roller Simulator */}
+          <div className="card bg-base-100 shadow-xl card-bordered my-6 p-3 overflow-hidden">
+            <div className="card-body">
+              <h2 className="text-2xl font-bold text-center">Battle Roller</h2>
 
-      {/* Attacker and Defender Labels */}
-      <div className="dice-label-container">
-        <div className="dice-label-left">
-          <p className="label">Attacker</p>
-        </div>
-        <div className="dice-label-right">
-          <p className="label">Defender</p>
-        </div>
-      </div>
+                {/* Attacker and Defender Labels */}
+                <div className="dice-label-container">
+                  <div className="dice-label-left">
+                    <p className="label">Attacker</p>
+                  </div>
+                  <div className="dice-label-right">
+                    <p className="label">Defender</p>
+                  </div>
+                </div>
 
-      {/* Dice Display: initial rolls */}
-      <div className="dice-container">
-        <div className="dice">
-          <p className="dice-value">{initialDice1}</p> {/* Show initial roll for dice1 */}
-        </div>
-        <div className="dice">
-          <p className="dice-value">{initialDice2}</p> {/* Show initial roll for dice2 */}
-        </div>
-      </div>
+                {/* Dice Display: initial rolls */}
+                <div className="dice-container">
+                  <div className="dice">
+                    <p className="dice-value">{initialDice1}</p> {/* Show initial roll for dice1 */}
+                  </div>
+                  <div className="dice">
+                    <p className="dice-value">{initialDice2}</p> {/* Show initial roll for dice2 */}
+                  </div>
+                </div>
 
-      {/* Faction Dropdowns */}
-      <div className="dropdown-container">
-        <div className="dropdown-left">
-          <label htmlFor="attacker">Select Attacker Faction:</label>
-          <select
-            id="attacker"
-            value={attacker}
-            onChange={(e) => setAttacker(e.target.value)}
-            className="faction-select"
-          >
-            <option value="">-- Select Faction --</option>
-            <option value="Marquise de Cat">Marquise de Cat</option>
-            <option value="Eyrie Dynasties">Eyrie Dynasties</option>
-            <option value="Woodland Alliance">Woodland Alliance</option>
-            <option value="Vagabond">Vagabond</option>
-          </select>
-        </div>
+                {/* Faction Dropdowns */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                    <div>
+                      <label htmlFor="attacker" className="block text-sm font-medium mb-1">Select Attacker Faction:</label>
+                      <select
+                        id="attacker"
+                        value={attacker}
+                        onChange={(e) => setAttacker(e.target.value)}
+                        className="select select-bordered w-fit"
+                      >
+                        <option value="">-- Select Faction --</option>
+                        <option value="Marquise de Cat">Marquise de Cat</option>
+                        <option value="Eyrie Dynasties">Eyrie Dynasties</option>
+                        <option value="Woodland Alliance">Woodland Alliance</option>
+                        <option value="Vagabond">Vagabond</option>
+                      </select>
+                    </div>
 
-        <div className="dropdown-right">
-          <label htmlFor="defender">Select Defender Faction:</label>
-          <select
-            id="defender"
-            value={defender}
-            onChange={(e) => setDefender(e.target.value)}
-            className="faction-select"
-          >
-            <option value="">-- Select Faction --</option>
-            <option value="Marquise de Cat">Marquise de Cat</option>
-            <option value="Eyrie Dynasties">Eyrie Dynasties</option>
-            <option value="Woodland Alliance">Woodland Alliance</option>
-            <option value="Vagabond">Vagabond</option>
-          </select>
-        </div>
-      </div>
+                    <div>
+                      <label htmlFor="defender" className="block text-sm font-medium mb-1">Select Defender Faction:</label>
+                      <select
+                        id="defender"
+                        value={defender}
+                        onChange={(e) => setDefender(e.target.value)}
+                        className="select select-bordered w-fit"
+                      >
+                        <option value="">-- Select Faction --</option>
+                        <option value="Marquise de Cat">Marquise de Cat</option>
+                        <option value="Eyrie Dynasties">Eyrie Dynasties</option>
+                        <option value="Woodland Alliance">Woodland Alliance</option>
+                        <option value="Vagabond">Vagabond</option>
+                      </select>
+                    </div>
+                </div>
 
-      {/* Display the number of hits */}
-      <div className="hits-display text-2xl mb-3">
-        {attackerHits !== null && defenderHits !== null && (
-          <>
-            <p>
-              <strong><span style={{ color: getFactionColor(attacker) }}>{attacker}</span></strong> gets <strong>{attackerHits}</strong> hits
-            </p>
-            <p>
-              <strong><span style={{ color: getFactionColor(defender) }}>{defender}</span></strong> gets <strong>{defenderHits}</strong> hits
-            </p>
-          </>
-        )}
-      </div>
+                {/* Display the number of hits */}
+                <div className="hits-display text-center text-xl mb-4">
+                  {attackerHits !== null && defenderHits !== null && (
+                    <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+                      <span>
+                        <strong>
+                          <span style={{ color: getFactionColor(attacker) }}>{attacker}</span>
+                        </strong>{" "}
+                        gets <strong>{attackerHits}</strong> hits
+                      </span>
+                      <span>
+                        <strong>
+                          <span style={{ color: getFactionColor(defender) }}>{defender}</span>
+                        </strong>{" "}
+                        gets <strong>{defenderHits}</strong> hits
+                      </span>
+                    </div>
+                  )}
+                </div>
 
+                {/* Roll Dice Button */}
+                <div className="text-center">
+                  <button
+                    className="btn btn-primary text-white font-bold w-full md:w-auto"
+                    onClick={rollDice}
+                  >
+                    Roll Dice
+                  </button>
+                </div>
 
-      {/* Roll Dice Button */}
-      <div className="text-center">
-        <button className="btn btn-primary text-white font-bold" style={{ width: '120px' }} onClick={rollDice}>
-          Roll Dice
-       </button>
-      </div>
-      </div>
-      </div>
+             </div>
+          </div>
 
       {/* Resettable actions taken counter */}
       <div className="card bg-base-100 shadow-xl flex justify-center my-6 p-3">
@@ -238,7 +248,7 @@ export const PlayGame = () => {
 
             {/* Reset button */}
             <div className="flex justify-center mt-4">
-                <button className="btn btn-primary text-white" 
+                <button className="btn btn-primary text-white w-full md:w-auto" 
                         onClick={() => setActionsCounter(0)}>
                   Reset
                 </button>
@@ -353,7 +363,7 @@ export const PlayGame = () => {
             {selectedPlayers.map((player, index) => (
             <button
             key={index}
-            className="btn text-lg font-bold"
+            className="btn text-lg font-bold min-h-[5rem] pb-2 md:pb-1 lg:pb-0"
             style={{
               backgroundColor: "white",
               color: factionColors[player.faction],
@@ -377,7 +387,7 @@ export const PlayGame = () => {
             ))}
           </div>
         </div>
-         {/* If a winner is clicked, display who won below all players */}
+        {/* If a winner is clicked, display who won below all players */}
         {winner && (
         <div className="text-center text-xl font-semibold mb-2">
           <p>{winner} is the winner of the game!</p>
