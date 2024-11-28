@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import logo from "./logo.png";
 import { useLocation } from "react-router-dom";
 
@@ -123,7 +124,9 @@ export const PlayGame = () => {
 
       {/* Navbar with Centered Logo */}
       <nav className="navbar bg-base-100 justify-center">
-        <img src={logo} alt="Logo" className="h-12" />
+        <Link to="/">
+          <img src={logo} alt="Logo" className="h-12" />
+        </Link>
       </nav>
 
       <h1 className="text-2xl font-bold mb-3 mt-3">Play Game</h1>
@@ -352,8 +355,6 @@ export const PlayGame = () => {
         </div>
       </div>
       </div>
-
-      <br/>
 
       {/* Game Over */}
       <div className="card bg-base-100 shadow-xl my-6 p-3">

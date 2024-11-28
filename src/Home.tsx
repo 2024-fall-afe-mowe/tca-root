@@ -52,7 +52,9 @@ export const Home = () => {
 
       {/* Navbar with Centered Logo */}
       <nav className="navbar bg-base-100 justify-center">
-        <img src={logo} alt="Logo" className="h-12" />
+        <Link to="/">
+          <img src={logo} alt="Logo" className="h-12" />
+        </Link>
       </nav>
 
       <h2 className="text-2xl">a companion app by TSA Games</h2>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "./logo.png";
 
 // Define a type for "player" objects
@@ -144,7 +145,9 @@ export const Setup = () => {
       
       {/* Navbar with Centered Logo */}
       <nav className="navbar bg-base-100 justify-center">
-        <img src={logo} alt="Logo" className="h-12" />
+        <Link to="/">
+          <img src={logo} alt="Logo" className="h-12" />
+        </Link>
       </nav>
 
       <h1 className="text-3xl font-bold mb-3 mt-3">Setup</h1>
