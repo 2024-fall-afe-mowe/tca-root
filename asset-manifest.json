@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/tca-root/static/css/main.3029de2a.css",
+    "main.js": "/tca-root/static/js/main.1a792cd9.js",
+    "static/js/453.f946be2e.chunk.js": "/tca-root/static/js/453.f946be2e.chunk.js",
+    "static/media/logo.png": "/tca-root/static/media/logo.ea061985a6e6ba7f9e2b.png",
+    "index.html": "/tca-root/index.html",
+    "main.3029de2a.css.map": "/tca-root/static/css/main.3029de2a.css.map",
+    "main.1a792cd9.js.map": "/tca-root/static/js/main.1a792cd9.js.map",
+    "453.f946be2e.chunk.js.map": "/tca-root/static/js/453.f946be2e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3029de2a.css",
+    "static/js/main.1a792cd9.js"
+  ]
+}
