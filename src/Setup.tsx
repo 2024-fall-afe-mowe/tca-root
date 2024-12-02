@@ -20,131 +20,91 @@ const factions = [
   { name: "Vagabond", color: "gray" },
 ];
 
-// Define the API URL (replace with your actual URL)
-const API_URL = "https://32wop75hhc.execute-api.us-east-1.amazonaws.com/prod";
-
 export const Setup = () => {
+
   const navigate = useNavigate();
-
   const [darkMode, setDarkMode] = useState(false);
-
+  
   // Define player's state as an array of "player" objects
   const [playerName, setPlayerName] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]); // State to track selected players
   const [playerFactions, setPlayerFactions] = useState<{ [key: string]: string }>({}); // Track player factions
 
-  // Fetch players from DynamoDB on component mount
+  // Load players from localStorage on component mount
   useEffect(() => {
-    const fetchPlayers = async () => {
-      try {
-        const response = await fetch(`${API_URL}/data`); // API endpoint
-        const data = await response.json();
-
-        console.log("Fetched players:", data); // Log data
-
-        // Ensure the response is an array
-        if (Array.isArray(data)) {
-          setPlayers(data);
-        } else {
-          console.error("Error: Players data is not an array.");
-          setPlayers([]); // Reset to empty array if the data is not an array
-        }
-      } catch (error) {
-        console.error("Error fetching players:", error);
-        setPlayers([]); // Reset to empty array in case of error
-      }
-    };
-    fetchPlayers();
+    const storedPlayers = JSON.parse(localStorage.getItem("players") || "[]");
+    setPlayers(storedPlayers);
   }, []);
 
-  // Function to add a new player
-  const addPlayer = async () => {
-    if (playerName.trim() === "") {
-      alert("Please enter a player name.");
-      return;
-    }
+  // Function to add a new player to localStorage
+  const addPlayer = () => {
+    if (playerName.trim() !== "") {
+      const updatedPlayers = [
+        ...players,
+        {
+          name: playerName,
+          wins: 0,
+          losses: 0,
+          pct: ".000",
+        },
+      ];
 
-    // Check if the player name already exists
-    if (players.some((player) => player.name.toLowerCase() === playerName.toLowerCase())) {
-      alert("Player name already exists.");
-      return;
-    }
+      // Save updated players list back to localStorage
+      localStorage.setItem("players", JSON.stringify(updatedPlayers));
 
-    const newPlayer: Player = {
-      name: playerName,
-      wins: 0,
-      losses: 0,
-      pct: ".000",
-    };
-
-    try {
-      const response = await fetch(`${API_URL}/players`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newPlayer),
-      });
-
-      if (response.ok) {
-        setPlayers((prev) => [...prev, newPlayer]);
-        setPlayerName("");
-      } else {
-        console.error("Error adding player:", response.statusText);
-      }
-    } catch (error) {
-      console.error("Error adding player:", error);
+      // Update state
+      setPlayers(updatedPlayers);
+      setPlayerName("");
     }
   };
 
-  // Function to delete a player
-  const deletePlayer = async (name: string) => {
+  // Function to delete a player from localStorage
+  const deletePlayer = (name: string) => {
     const confirmDelete = window.confirm(`Are you sure you want to delete ${name}?`);
+
     if (confirmDelete) {
-      try {
-        const response = await fetch(`${API_URL}/players/${name}`, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          setPlayers((prev) => prev.filter((player) => player.name !== name));
-        } else {
-          console.error("Error deleting player:", response.statusText);
-        }
-      } catch (error) {
-        console.error("Error deleting player:", error);
-      }
+      const updatedPlayers = players.filter((player) => player.name !== name);
+
+      // Save updated players list back to localStorage
+      localStorage.setItem("players", JSON.stringify(updatedPlayers));
+
+      // Update state
+      setPlayers(updatedPlayers);
     }
   };
 
   // Function to handle selecting/deselecting a player
   const togglePlayerSelection = (playerName: string) => {
-    // Check if the player is already selected
-    if (selectedPlayers.includes(playerName)) {
-      // Deselect if already selected
-      setSelectedPlayers((prev) => prev.filter((name) => name !== playerName));
+  // Check if the player is already selected
+  if (selectedPlayers.includes(playerName)) {
+    // Deselect if already selected
+    setSelectedPlayers((prev) => prev.filter((name) => name !== playerName));
+  } else {
+    // Allow selection only if less than four players are selected
+    if (selectedPlayers.length < 4) {
+      setSelectedPlayers((prev) => [...prev, playerName]);
     } else {
-      // Allow selection only if less than four players are selected
-      if (selectedPlayers.length < 4) {
-        setSelectedPlayers((prev) => [...prev, playerName]);
-      } else {
-        alert("You can only select up to 4 players."); // Alert message if trying to select more than four players
-      }
+      alert("You can only select up to 4 players."); // Alert message if trying to select more than four players
     }
+  }
   };
+
 
   // Handle setting a faction for a player
   const setFactionForPlayer = (playerName: string, faction: string) => {
     setPlayerFactions((prev) => ({ ...prev, [playerName]: faction }));
   };
 
-  // Function to choose random factions for selected players
-  const chooseRandomFactions = () => {
-    const shuffledFactions = [...factions].sort(() => Math.random() - 0.5);
-    const newPlayerFactions = { ...playerFactions };
-    selectedPlayers.forEach((player, index) => {
-      newPlayerFactions[player] = shuffledFactions[index % shuffledFactions.length].name;
-    });
-    setPlayerFactions(newPlayerFactions);
-  };
+   // Function to choose random factions for selected players
+   const chooseRandomFactions = () => {
+      const shuffledFactions = [...factions].sort(() => Math.random() - 0.5);
+      const newPlayerFactions = { ...playerFactions };
+      selectedPlayers.forEach((player, index) => {
+        newPlayerFactions[player] = shuffledFactions[index % shuffledFactions.length].name;
+      });
+      setPlayerFactions(newPlayerFactions);
+   };
 
   // Function to check if there are duplicate factions
   const hasDuplicateFactions = () => {
@@ -282,13 +242,16 @@ export const Setup = () => {
 
       {/* Start Playing Button */}
       <button
-        className="btn btn-secondary"
-        onClick={() =>
-          navigate("/play", {
-            state: { selectedPlayers: selectedPlayers.map((name) => ({ name, faction: playerFactions[name] })) },
-          })
-        }
-        disabled={selectedPlayers.some((name) => !playerFactions[name]) || hasDuplicateFactions()}
+        className="btn btn-secondary font-bold"
+        onClick={() => {
+        // Pass selected players and their factions when navigating to the PlayGame page
+            const selectedPlayersWithFactions = selectedPlayers.map((name) => ({
+              name,
+              faction: playerFactions[name],
+            }));
+            navigate("/play", { state: { selectedPlayers: selectedPlayersWithFactions } });
+          }}
+          disabled={selectedPlayers.some((name) => !playerFactions[name]) || hasDuplicateFactions()} // Disable until all players have factions or if there's duplicates
       >
         Play Game
       </button>
