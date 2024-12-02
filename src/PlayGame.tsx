@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import logo from "./logo.png";
 import { useLocation } from "react-router-dom";
+import axios from 'axios';
+import { GameResult } from './game-results';
+
 
 export const PlayGame = () => {
     const [winner, setWinner] = useState<string | null>(null); // For tracking the winner (temporary)
@@ -74,10 +77,24 @@ export const PlayGame = () => {
       }
     };
 
-  type Player = {
-    name: string;
-    faction: string;
-  };
+ // Define types
+type Player = {
+  name: string;
+  faction: string;
+  wins: number;
+  losses: number;
+  pct: string;
+};
+
+type GameResult = {
+  players: { name: string; faction: string; result: "Win" | "Loss" }[];
+  winner: string;
+  winningFaction: string;
+  losingFaction: string;
+  startTime: string;
+  endTime: string;
+  date: string;
+};
   
   {/*Code added to track winner in Game Over section*/}
   const location = useLocation();
@@ -90,6 +107,73 @@ export const PlayGame = () => {
     "Woodland Alliance": "#4CAF50",
     "Vagabond": "gray",
   };
+
+  // Function to send the winner's data to backend
+  const recordWin = async (winnerName: string) => {
+    try {
+      const response = await axios.post('https://32wop75hhc.execute-api.us-east-1.amazonaws.com/prod/data/record-win', {
+        playerName: winnerName,
+      });
+      console.log('Win recorded successfully:', response.data);
+    } catch (error) {
+      console.error('Error recording win:', error);
+    }
+  };
+
+  const calculateWinPercentage = (wins: number, losses: number): string => {
+    const totalGames = wins + losses;
+    return totalGames === 0 ? ".000" : (wins / totalGames).toFixed(3);
+  };
+  
+
+  const endGame = async () => {
+    const timestamp = new Date().toISOString();
+  
+    // Construct game result object
+    const gameResult: GameResult = {
+      players: selectedPlayers.map((player) => ({
+        name: player.name,
+        faction: player.faction,
+        result: player.name === winner ? "Win" : "Loss",
+      })),
+      winner: winner || "No Winner", // Default to "No Winner" if `winner` is null
+      winningFaction: winner
+        ? selectedPlayers.find((player) => player.name === winner)?.faction || "Unknown"
+        : "No Winner",
+      losingFaction: winner
+        ? selectedPlayers
+            .filter((player) => player.name !== winner)
+            .map((player) => player.faction)
+            .join(", ") || "Unknown"
+        : "No Loser",
+      startTime: "2024-01-01T00:00:00Z", // Replace with actual start time if available
+      endTime: timestamp, // Use the current time as the end time
+      date: timestamp, // Optional, already included
+    };
+  
+    try {
+      // Save to backend (if necessary)
+      // await saveGameToCloud(email, "YourGameApp", timestamp, gameResult);
+  
+      // Update local leaderboard stats
+      const updatedPlayers = selectedPlayers.map((player) => {
+        if (player.name === winner) {
+          return { ...player, wins: player.wins + 1, pct: calculateWinPercentage(player.wins + 1, player.losses) };
+        }
+        return { ...player, losses: player.losses + 1, pct: calculateWinPercentage(player.wins, player.losses + 1) };
+      });
+  
+      console.log("Updated players: ", updatedPlayers);
+      setWinner(null); // Reset winner for the next game
+      nav("/"); // Navigate back to the home page
+    } catch (error) {
+      console.error("Error saving game result:", error);
+    }
+  };
+  
+
+  
+  
 
   return (
 
@@ -356,38 +440,45 @@ export const PlayGame = () => {
       </div>
       </div>
 
-      {/* Game Over */}
-      <div className="card bg-base-100 shadow-xl my-6 p-3">
-        <div className="card-body">
-          <h2 className="text-center text-3xl font-bold">Game Over</h2>
-          <div className="flex flex-col items-center space-y-3">
-            {selectedPlayers.map((player, index) => (
-            <button
-            key={index}
-            className="btn text-lg font-bold min-h-[5rem] pb-2 md:pb-1 lg:pb-0"
+{/* Game Over */}
+<div className="card bg-base-100 shadow-xl card-bordered my-6 p-3 overflow-hidden">
+  <div className="card-body">
+    <h2 className="text-center text-3xl font-bold">Game Results</h2>
+    <br/>
+
+    <div className="flex flex-wrap justify-center gap-4">
+      {selectedPlayers.map((player) => (
+        <button
+          key={player.name}
+          className="btn border-2 text-lg font-bold"
+          style={{
+            backgroundColor: "white",
+            color: factionColors[player.faction],
+            borderColor: factionColors[player.faction],
+          }}
+          onClick={async () => {
+            setWinner(player.name); // Set winner state
+            await recordWin(player.name); // Record the win
+            endGame(); // Trigger endGame logic
+          }}
+        >
+          <span>{player.name} won</span>
+          <span
+            className="ml-2"
             style={{
-              backgroundColor: "white",
               color: factionColors[player.faction],
-              borderColor: factionColors[player.faction],
+              border: `2px solid ${factionColors[player.faction]}`,
+              padding: "2px 5px",
+              borderRadius: "5px",
             }}
-            onClick={() => setWinner(player.name)}
           >
-            <span>{player.name} won</span>
-            <span
-              className="ml-2"
-              style={{
-                color: factionColors[player.faction],
-                border: `2px solid ${factionColors[player.faction]}`,
-                padding: "2px 5px",
-                borderRadius: "5px",
-              }}
-            >
-              {player.faction}
-            </span>
-          </button>
-            ))}
-          </div>
-        </div>
+            {player.faction}
+          </span>
+        </button>
+      ))}
+    </div>
+  </div>
+        
         {/* If a winner is clicked, display who won below all players */}
         {winner && (
         <div className="text-center text-xl font-semibold mb-2">
