@@ -6,6 +6,10 @@ import { Home } from './Home';
 import { Setup } from './Setup';
 import { PlayGame } from './PlayGame';
 
+import localforage from 'localforage';
+
+import { saveGameToCloud } from './tca-cloud-api';
+
 // Hash router for all the routes
 const myRouter = createHashRouter([
   {
