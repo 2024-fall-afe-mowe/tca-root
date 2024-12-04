@@ -32,6 +32,13 @@ export const Setup: FC<SetupProps> = ({
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
   
+  const [availablePlayers, setAvailablePlayers] = useState(previousPlayers.map(
+    x => ({
+      name: x 
+      , checked: false
+    })
+  ));
+
   // Define player's state as an array of "player" objects
   const [playerName, setPlayerName] = useState("");
   const [players, setPlayers] = useState<Player[]>([]);
@@ -61,6 +68,13 @@ export const Setup: FC<SetupProps> = ({
       localStorage.setItem("players", JSON.stringify(updatedPlayers));
 
       // Update state
+      setAvailablePlayers([
+        ...availablePlayers 
+        , {
+          name: playerName
+          , checked: true
+        }
+      ]);
       setPlayers(updatedPlayers);
       setPlayerName("");
     }
@@ -178,6 +192,43 @@ export const Setup: FC<SetupProps> = ({
 
       {/* List of Active Players */}
       <h2 className="text-2xl font-bold mb-2">Active Players:</h2>
+
+      {
+          availablePlayers.map(x => (
+              <div
+                  key={x.name}
+              >
+                  <div 
+                      className="form-control"
+                  >
+                      <label 
+                          className="cursor-pointer flex mt-3"
+                      >
+                          <input 
+                              type="checkbox" 
+                              className="checkbox" 
+                              checked={x.checked}
+                              onChange={() => setAvailablePlayers(
+                                  availablePlayers.map(y =>({
+                                      ...y 
+                                      , checked: y.name === x.name 
+                                          ? !y.checked 
+                                          : y.checked
+                                  }))
+                              )}
+                          />
+                          <span 
+                              className="label-text ml-3"
+                          >
+                              {x.name}
+                          </span>
+                      </label>
+                  </div>
+            </div>
+          )
+        )
+      }
+
       {players.length === 0 ? (
         <p>No players added yet.</p>
       ) : (
@@ -251,6 +302,16 @@ export const Setup: FC<SetupProps> = ({
       <button
         className="btn btn-secondary font-bold"
         onClick={() => {
+           // Update the lifted state of current players...
+           setCurrentPlayers(
+            availablePlayers
+              .filter(
+                x => x.checked
+              )
+              .map(
+                x => x.name
+              )
+          );
         // Pass selected players and their factions when navigating to the PlayGame page
             const selectedPlayersWithFactions = selectedPlayers.map((name) => ({
               name,

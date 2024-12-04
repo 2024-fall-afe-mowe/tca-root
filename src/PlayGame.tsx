@@ -1,10 +1,22 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import logo from "./logo.png";
 import { useLocation } from "react-router-dom";
+import { GameResult } from './game-results';
 
-export const PlayGame = () => {
+interface PlayGameProps {
+  currentPlayers: string[];
+  addNewGameResult: (gr: GameResult) => void;
+}
+
+export const PlayGame: FC<PlayGameProps> = ({
+  currentPlayers
+  , addNewGameResult
+}) => {
+
+    const [startTimeState, setStartTimeState] = useState(new Date().toISOString());
+
     const [winner, setWinner] = useState<string | null>(null); // For tracking the winner (temporary)
 
     const nav = useNavigate();
@@ -361,6 +373,28 @@ export const PlayGame = () => {
         <div className="card-body">
           <h2 className="text-center text-3xl font-bold">Game Over</h2>
           <div className="flex flex-col items-center space-y-3">
+            {
+              currentPlayers.map(
+                x => (
+                  <button
+                    key={x}
+                    className='btn'
+                    onClick={() => {
+                      addNewGameResult({
+                        startTime: startTimeState,
+                        endTime: new Date().toISOString(),
+                        winner: x,
+                        players: currentPlayers,
+                      });     
+                      
+                      nav(-2);
+                    }}
+                  >
+                    {x} Won
+                  </button>
+                )
+              )
+            }
             {selectedPlayers.map((player, index) => (
             <button
             key={index}

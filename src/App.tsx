@@ -82,7 +82,10 @@ const App = () => {
     },
     {
       path: "/play",
-      element: <PlayGame />,
+      element: <PlayGame 
+        currentPlayers={currentPlayers}
+        addNewGameResult={addNewGameResult}
+      />,
     },
   ]);  
 
