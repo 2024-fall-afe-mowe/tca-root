@@ -1,14 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from "./logo.png";
-
-// Define the structure of a "player" object
-interface Player {
-  name: string;
-  wins: number;
-  losses: number;
-  pct: string;
-}
+import { Player } from './game-results';
 
 export const Home = () => {
   const [players, setPlayers] = useState<Player[]>([]);
