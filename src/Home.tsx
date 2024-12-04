@@ -4,6 +4,8 @@ import { loadGamesFromCloud } from "./tca-cloud-api";
 import logo from "./logo.png";
 import axios from 'axios';
 
+export const AppTitle = "Root Companion App";
+
 // Define the structure of a "player" object
 interface Player {
   name: string;
@@ -26,25 +28,41 @@ interface Stats {
   averageGameLength: string | null;
 }
 
-const fetchLeaderboard = async () => {
+interface LeaderboardEntry {
+  name: string;
+  score: number;
+}
+
+interface GeneralFactsDisplay {
+  totalGames: number;
+  totalPlayers: number;
+  averageGameDuration: number;
+}
+
+interface HomeProps {
+  leaderboardData: LeaderboardEntry[];
+  generalFactsData: GeneralFactsDisplay;
+  setTitle: (title: string) => void;
+  factionLeaderboardData: LeaderboardEntry[];
+  gameResults: { timestamp: string; winner: string; loser: string }[];
+}
+
+
+const fetchLeaderboard = async (): Promise<Player[]> => {
   try {
     const response = await axios.get(
-      'https://32wop75hhc.execute-api.us-east-1.amazonaws.com/prod/data/leaderboard'
+      "https://32wop75hhc.execute-api.us-east-1.amazonaws.com/prod/data/leaderboard"
     );
     const data = response.data;
-
-    // Ensure data is an array
-    if (Array.isArray(data)) {
-      return data;
-    }
-
+    if (Array.isArray(data)) return data;
     console.error("Unexpected leaderboard response:", data);
-    return []; // Return empty array if data is not an array
+    return [];
   } catch (error) {
     console.error("Error fetching leaderboard:", error);
     return [];
   }
 };
+
 
 export const Home = () => {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -55,58 +73,37 @@ export const Home = () => {
     totalGames: 0,
     averageGameLength: null,
   });
-
-  useEffect(() => {
-    const loadPlayers = async () => {
-      const data = await fetchLeaderboard();
-
-      // Ensure the data is an array before updating state
-      if (Array.isArray(data)) {
-        setPlayers(data);
-      } else {
-        console.error("Unexpected data format:", data);
-        setPlayers([]); // Set to empty array if data isn't an array
-      }
-    };
-
-    loadPlayers();
-  }, []);
-
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    const storedMode = localStorage.getItem('darkMode') === 'true';
+    const storedMode = localStorage.getItem("darkMode") === "true";
     setDarkMode(storedMode);
-  }, []);
-  
-  useEffect(() => {
-    localStorage.setItem('darkMode', darkMode.toString());
-  }, [darkMode]);
-  
 
-  useEffect(() => {
+    const loadPlayers = async () => {
+      const data = await fetchLeaderboard();
+      setPlayers(data);
+    };
+
     const fetchAndCalculateStats = async () => {
       const email = "pbrummel@gmail.com";
       const appName = "tca-root";
-
       try {
         const games = await loadGamesFromCloud(email, appName);
-        if (games.length > 0) {
-          calculateStats(games);
-        } else {
-          console.warn("No games found for the user.");
-        }
+        if (games.length > 0) calculateStats(games);
       } catch (error) {
         console.error("Failed to load games from cloud:", error);
       }
     };
 
+    loadPlayers();
     fetchAndCalculateStats();
   }, []);
 
-  const calculateStats = (games: Game[]) => {
-    if (games.length === 0) return;
+  useEffect(() => {
+    localStorage.setItem("darkMode", darkMode.toString());
+  }, [darkMode]);
 
+  const calculateStats = (games: Game[]) => {
     let totalDuration = 0;
     let shortestGame: Game | null = null;
     let longestGame: Game | null = null;
@@ -114,35 +111,21 @@ export const Home = () => {
 
     games.forEach((game) => {
       const { duration, players, date } = game;
-
-      // Update shortest game
-      if (!shortestGame || duration < shortestGame.duration) {
-        shortestGame = { duration, players, date };
-      }
-
-      // Update longest game
-      if (!longestGame || duration > longestGame.duration) {
-        longestGame = { duration, players, date };
-      }
-
-      // Update last played date
-      if (!lastPlayed || new Date(date) > new Date(lastPlayed)) {
-        lastPlayed = date;
-      }
-
+      if (!shortestGame || duration < shortestGame.duration) shortestGame = game;
+      if (!longestGame || duration > longestGame.duration) longestGame = game;
+      if (!lastPlayed || new Date(date) > new Date(lastPlayed)) lastPlayed = date;
       totalDuration += duration;
     });
-
-    const averageGameLength = (totalDuration / games.length).toFixed(2);
 
     setStats({
       shortestGame,
       longestGame,
       lastPlayed,
       totalGames: games.length,
-      averageGameLength,
+      averageGameLength: (totalDuration / games.length).toFixed(2),
     });
   };
+
 
   return (
     <div className="App min-h-screen"  data-theme={darkMode ? "dark" : "light"}>
@@ -265,3 +248,5 @@ export const Home = () => {
     </div>
   );
 };
+
+export default Home; 
