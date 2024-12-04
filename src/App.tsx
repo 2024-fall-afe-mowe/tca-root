@@ -5,7 +5,7 @@ import { RouterProvider, createHashRouter } from 'react-router-dom';
 import { Home } from './Home';
 import { Setup } from './Setup';
 import { PlayGame } from './PlayGame';
-import { GameResult } from './game-results';
+import { GameResult, getPreviousPlayers } from './game-results';
 import { loadGamesFromCloud, saveGameToCloud } from './tca-cloud-api';
 
 const App = () => {
@@ -15,6 +15,7 @@ const App = () => {
   //
 
   const [gameResults, setGameResults] = useState<GameResult[]>([]);
+  const [currentPlayers, setCurrentPlayers] = useState<string[]>([]);
 
   useEffect(
     () => {
@@ -74,7 +75,10 @@ const App = () => {
     },
     {
       path: "/setup",
-      element: <Setup />,
+      element: <Setup 
+        previousPlayers={getPreviousPlayers(gameResults)}
+        setCurrentPlayers={setCurrentPlayers}
+      />,
     },
     {
       path: "/play",

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import logo from "./logo.png";
@@ -20,7 +20,14 @@ const factions = [
   { name: "Vagabond", color: "gray" },
 ];
 
-export const Setup = () => {
+interface SetupProps {
+  previousPlayers: string[];
+  setCurrentPlayers: (players: string[]) => void;
+}
+export const Setup: FC<SetupProps> = ({
+  previousPlayers 
+  , setCurrentPlayers
+}) => {
 
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
