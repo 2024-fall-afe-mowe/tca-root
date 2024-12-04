@@ -1,28 +1,91 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { RouterProvider, createHashRouter } from 'react-router-dom';
 
 import { Home } from './Home';
 import { Setup } from './Setup';
 import { PlayGame } from './PlayGame';
-
-// Hash router for all the routes
-const myRouter = createHashRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/setup",
-    element: <Setup />,
-  },
-  {
-    path: "/play",
-    element: <PlayGame />,
-  },
-]);
+import { GameResult } from './game-results';
+import { loadGamesFromCloud, saveGameToCloud } from './tca-cloud-api';
 
 const App = () => {
+
+  //
+  // React hooks...
+  //
+
+  const [gameResults, setGameResults] = useState<GameResult[]>([]);
+
+  useEffect(
+    () => {
+
+      const loadGameResults = async () => {
+        
+        const savedGameResults = await loadGamesFromCloud(
+          "ts@mc.edu"
+          , "tca-root-24f"
+        );
+
+        if (!ignore) {
+          setGameResults(savedGameResults);
+        }
+      }
+
+      let ignore = false;
+      loadGameResults();
+      
+      return () => {
+        ignore = true;
+      }
+    }
+    , []
+  ); 
+
+  //
+  // Other funcs, helpers, calc state, etc...
+  //
+
+  const addNewGameResult = async (newResult: GameResult) => {
+
+    try {
+        await saveGameToCloud(
+          "ts@mc.edu"
+          , "tca-root-24f"
+          , newResult.endTime
+          , newResult
+        );
+
+      // Optimistically updates the lifted state... Okay-ish, it's never failed for me : - )
+      setGameResults([
+        ...gameResults 
+        , newResult
+      ]);
+    }
+    catch (e) {
+      console.error(e);
+    }
+  };
+
+  // Hash router for all the routes
+  const myRouter = createHashRouter([
+    {
+      path: "/",
+      element: <Home />,
+    },
+    {
+      path: "/setup",
+      element: <Setup />,
+    },
+    {
+      path: "/play",
+      element: <PlayGame />,
+    },
+  ]);  
+
+  //
+  // JSX...
+  //
+
   return (
     <div className="App">
       {/* main component handling routing */}
