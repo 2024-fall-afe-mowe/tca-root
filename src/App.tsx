@@ -23,7 +23,7 @@ const App = () => {
       const loadGameResults = async () => {
         
         const savedGameResults = await loadGamesFromCloud(
-          "ts@mc.edu"
+          "pbrummel@gmail.com"
           , "tca-root-24f"
         );
 
@@ -50,7 +50,7 @@ const App = () => {
 
     try {
         await saveGameToCloud(
-          "ts@mc.edu"
+          "pbrummel@gmail.com"
           , "tca-root-24f"
           , newResult.endTime
           , newResult
