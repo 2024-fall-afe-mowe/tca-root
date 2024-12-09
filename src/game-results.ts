@@ -9,11 +9,6 @@ const formatLastPlayed = durationFormatter<string>({
 //
 // Type definitions...
 //
-export type Turn = {
-    turnNumber: number;
-    player: string;
-};
-
 export type GameResult = {
     startTime: string;
     endTime: string;
@@ -22,8 +17,6 @@ export type GameResult = {
     winningFaction: Faction;
     losingFaction: Faction;
     players: string[];
-
-    turns: Turn[];
 };
 
 export type LeaderboardEntry = {
@@ -215,32 +208,4 @@ const getLeaderboardEntry = (
 
         , name: player
     };
-};
-
-const getAvgTurnsPerGame = (results: GameResult[]) => {
-
-    // Current dummyGameResults has...
-    // . 2 games 
-    // . 1 game has 3 turns 
-    // . 1 game has 2 turns 
-    // . expect avg to be (3 + 2) / 2 = 2.5
-
-    // Get max turn number for each game, and use as number of turns in the game.
-    const arrayOfMaxTurnNumbers = results.map(
-        x => Math.max(...x.turns.map(
-                y => y.turnNumber
-            )
-        )
-    );
-
-    // console.log(arrayOfMaxTurnNumbers); // Expect [3, 2]
-
-    return (
-        arrayOfMaxTurnNumbers.length > 0
-            ? arrayOfMaxTurnNumbers.reduce(
-                (acc, x) => acc + x
-                , 0
-            ) / arrayOfMaxTurnNumbers.length
-            : 0
-    );
 };

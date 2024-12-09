@@ -42,17 +42,17 @@ const App = () => {
 
       if (emailForCloudApi.length > 0) {
         await saveGameToCloud(
-          emailForCloudApi
-          , "tca-root-24f"
-          , newResult.endTime
-          , newResult
+          emailForCloudApi  // User's cloud account
+          , "tca-root-24f" // Specific key for the game results . . . can this be called anything I want it to be?? 
+          , newResult.endTime // Timestamp for when the game ended
+          , newResult // The new game result to save
         );
       }
 
       // Optimistically updates the lifted state... Okay-ish, it's never failed for me : - )
       setGameResults([
-        ...gameResults 
-        , newResult
+        ...gameResults  // existing game results
+        , newResult // The new game result being added
       ]);
     }
     catch (e) {
