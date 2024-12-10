@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from "./logo.png";
+import { LeaderboardEntry } from "./game-results";
+
+export const AppTitle = "Root Companion App";
 
 // Define the structure of a "player" object
 export interface Player {
@@ -10,14 +13,23 @@ export interface Player {
   pct: string;
 };
 
-export const Home = () => {
-  const [players, setPlayers] = useState<Player[]>([]);
+interface HomeProps {
+  leaderboardData: LeaderboardEntry[];
+  gameResults: {timestamp: string, winner: string, loser: string}[];
+  setTitle: (t: string) => void;
+}
 
-  // Fetch players from localStorage on component mount
-  useEffect(() => {
-    const storedPlayers = JSON.parse(localStorage.getItem("players") || "[]");
-    setPlayers(storedPlayers);
-  }, []);
+export const Home: React.FC<HomeProps> = ({
+  leaderboardData,
+  setTitle
+}) => {
+
+  useEffect(
+    () => setTitle(AppTitle)
+    , []
+  );
+
+  const [players, setPlayers] = useState<Player[]>([]);
 
   const [darkMode, setDarkMode] = useState(false);
 
@@ -67,35 +79,28 @@ export const Home = () => {
       <br />
 
       {/* Leaderboard Section */}
-      <h1 className="text-3xl font-bold mb-4">Leaderboard</h1>
+<h1 className="text-3xl font-bold mb-4">Leaderboard</h1>
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body">
-          {players.length === 0 ? (
-            // Display this message if no players are added
-            <p className="text-center">(Please add new players to view Leaderboard)</p>
+          {leaderboardData.length > 0 ? (
+            <div className="grid grid-cols-4 gap-4">
+              <div className="text-left font-bold">Player</div>
+              <div className="text-center font-bold">W</div>
+              <div className="text-center font-bold">L</div>
+              <div className="text-center font-bold">Pct</div>
+            </div>
           ) : (
-            <>
-              {/* Show the leaderboard table only if players exist */}
-              <div className="grid grid-cols-4 gap-4">
-                <div className="text-left font-bold">Player</div>
-                <div className="text-center font-bold">W</div>
-                <div className="text-center font-bold">L</div>
-                <div className="text-center font-bold">Pct</div>
-              </div>
-
-              {players.map((player, index) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-4 gap-4 mt-2 border-b border-gray-300 pb-2"
-                >
-                  <div className="text-left">{player.name}</div>
-                  <div className="text-center">{player.wins}</div>
-                  <div className="text-center">{player.losses}</div>
-                  <div className="text-center">{player.pct}</div>
-                </div>
-              ))}
-            </>
+            <p className="text-center">(Please add new players to view Leaderboard)</p>
           )}
+
+          {leaderboardData.map((player, index) => (
+            <div key={index} className="grid grid-cols-4 gap-4 mt-2 border-b border-gray-300 pb-2">
+              <div className="text-left">{player.name}</div>
+              <div className="text-center">{player.wins}</div>
+              <div className="text-center">{player.losses}</div>
+              <div className="text-center">{player.avg}</div>
+            </div>
+          ))}
         </div>
       </div>
 

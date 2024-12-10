@@ -371,63 +371,53 @@ export const PlayGame: FC<PlayGameProps> = ({
       {/* Game Over */}
       <div className="card bg-base-100 shadow-xl my-6 p-3">
         <div className="card-body">
-          <h2 className="text-center text-3xl font-bold">Game Over</h2>
+          <h2 className="text-center text-3xl font-bold mb-2">End Game</h2>
           <div className="flex flex-col items-center space-y-3">
-            {
-              currentPlayers.map(
-                x => (
-                  <button
-                    key={x}
-                    className='btn'
-                    onClick={() => {
-                      addNewGameResult({
-                        startTime: startTimeState,
-                        endTime: new Date().toISOString(),
-                        winner: x,
-                        players: currentPlayers,
-                      });     
-                      
-                      nav(-2);
-                    }}
-                  >
-                    {x} Won
-                  </button>
-                )
-              )
-            }
-            {selectedPlayers.map((player, index) => (
-            <button
-            key={index}
-            className="btn text-lg font-bold min-h-[5rem] pb-2 md:pb-1 lg:pb-0"
-            style={{
-              backgroundColor: "white",
-              color: factionColors[player.faction],
-              borderColor: factionColors[player.faction],
-            }}
-            onClick={() => setWinner(player.name)}
-          >
-            <span>{player.name} won</span>
-            <span
-              className="ml-2"
-              style={{
-                color: factionColors[player.faction],
-                border: `2px solid ${factionColors[player.faction]}`,
-                padding: "2px 5px",
-                borderRadius: "5px",
-              }}
-            >
-              {player.faction}
-            </span>
-          </button>
-            ))}
+            {currentPlayers.map((playerName) => {
+              const playerData = selectedPlayers.find((p) => p.name === playerName);
+
+              return (
+                <button
+                  key={playerName}
+                  className="btn text-lg font-bold min-h-[5rem] pb-2 md:pb-1 lg:pb-0"
+                  style={{
+                    backgroundColor: "white",
+                    color: playerData ? factionColors[playerData.faction] : "black",
+                    borderColor: playerData ? factionColors[playerData.faction] : "black",
+                  }}
+                  onClick={() => {
+                    if (playerData) {
+                      setWinner(playerData.name);
+                    }
+                    addNewGameResult({
+                      startTime: startTimeState,
+                      endTime: new Date().toISOString(),
+                      winner: playerName,
+                      players: currentPlayers,
+                    });
+                    nav(-2);
+                  }}
+                >
+                  <span>{playerName} won</span>
+                  {playerData && (
+                    <span
+                      className="ml-2"
+                      style={{
+                        color: factionColors[playerData.faction],
+                        border: `2px solid ${factionColors[playerData.faction]}`,
+                        padding: "2px 5px",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {playerData.faction}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
-        {/* If a winner is clicked, display who won below all players */}
-        {winner && (
-        <div className="text-center text-xl font-semibold mb-2">
-          <p>{winner} is the winner of the game!</p>
-        </div>
-      )}
+
       </div>
 
 

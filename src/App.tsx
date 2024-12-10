@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { RouterProvider, createHashRouter } from 'react-router-dom';
 
-import { Home } from './Home';
+import { AppTitle, Home } from './Home';
 import { Setup } from './Setup';
 import { PlayGame } from './PlayGame';
-import { GameResult, getPreviousPlayers } from './game-results';
+import { GameResult, getPreviousPlayers, getLeaderboard } from './game-results';
 import { loadGamesFromCloud, saveGameToCloud } from './tca-cloud-api';
 
 const App = () => {
@@ -16,6 +16,7 @@ const App = () => {
 
   const [gameResults, setGameResults] = useState<GameResult[]>([]);
   const [currentPlayers, setCurrentPlayers] = useState<string[]>([]);
+  const [leaderboardData, setLeaderboardData] = useState<any[]>([]); 
 
   useEffect(
     () => {
@@ -27,42 +28,26 @@ const App = () => {
           , "tca-root-24f"
         );
 
-        if (!ignore) {
-          setGameResults(savedGameResults);
-        }
-      }
+      setGameResults(savedGameResults);
+      setLeaderboardData(getLeaderboard(savedGameResults)); 
+    };
 
-      let ignore = false;
-      loadGameResults();
-      
-      return () => {
-        ignore = true;
-      }
-    }
-    , []
-  ); 
+    loadGameResults();
+  }, []); 
+  
 
   //
   // Other funcs, helpers, calc state, etc...
   //
 
+  const [title, setTitle] = useState(AppTitle);
+
   const addNewGameResult = async (newResult: GameResult) => {
-
     try {
-        await saveGameToCloud(
-          "pbrummel@gmail.com"
-          , "tca-root-24f"
-          , newResult.endTime
-          , newResult
-        );
-
-      // Optimistically updates the lifted state... Okay-ish, it's never failed for me : - )
-      setGameResults([
-        ...gameResults 
-        , newResult
-      ]);
-    }
-    catch (e) {
+      await saveGameToCloud("pbrummel@gmail.com", "tca-root-24f", newResult.endTime, newResult);
+      setGameResults((prev) => [...prev, newResult]);
+      setLeaderboardData(getLeaderboard([...gameResults, newResult]));  // Update leaderboard after new game result
+    } catch (e) {
       console.error(e);
     }
   };
@@ -71,7 +56,23 @@ const App = () => {
   const myRouter = createHashRouter([
     {
       path: "/",
-      element: <Home />,
+      element: <Home 
+        leaderboardData={getLeaderboard(gameResults)}
+        setTitle={setTitle}
+        gameResults={
+          gameResults
+            .map(
+              x => ({
+                timestamp: x.endTime
+                , winner: `${x.winner})` 
+                , loser: `${x.players.find(y => y !== x.winner)})`
+              })
+            )
+            .sort(
+              (a, b) => b.timestamp.localeCompare(a.timestamp)
+            )
+        }
+      />,
     },
     {
       path: "/setup",
