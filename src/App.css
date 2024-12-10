@@ -134,6 +134,27 @@ select {
 }
 
 
+/* Font specifics */
+
+.baskerville {
+  font-family: 'Baskerville', serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Luminari&family=Mrs+Eaves&display=swap');
+
+@font-face {
+  font-family: 'Luminari';
+  src: url('./fonts/Luminari-Regular.ttf') format('truetype');
+}
+
+.luminari-font {
+  font-family: 'Luminari', serif;
+}
+
+.mrs-eaves-font {
+  font-family: 'Mrs Eaves', serif;
+}
+
 
 @tailwind base;
 @tailwind components;

@@ -69,18 +69,18 @@ export const Home: React.FC<HomeProps> = ({
         </Link>
       </nav>
 
-      <h2 className="text-2xl">a companion app by TSA Games</h2>
+      <h2 className="text-2xl luminari-font">a companion app by TSA Games</h2>
       <br />
       
-      <Link to="/setup" className="btn btn-secondary font-bold">
+      <Link to="/setup" className="btn btn-secondary font-bold arial">
         Go to Setup
       </Link>
       <br />
       <br />
 
       {/* Leaderboard Section */}
-<h1 className="text-3xl font-bold mb-4">Leaderboard</h1>
-      <div className="card bg-base-100 shadow-xl">
+<h1 className="text-2xl font-bold luminari-font">Leaderboard</h1>
+      <div className="card bg-base-100 shadow-xl baskerville">
         <div className="card-body">
           {leaderboardData.length > 0 ? (
             <div className="grid grid-cols-4 gap-4">
@@ -107,7 +107,7 @@ export const Home: React.FC<HomeProps> = ({
       <div className="my-10"></div>
 
       {/* Fun-Fact Stats Section */}
-      <h1 className="text-3xl font-bold mb-4">Fun-Fact Stats</h1>
+      <h1 className="text-2xl font-bold mb-4 luminari-font" >Fun-Fact Stats</h1>
       <div className="stats stats-vertical lg:stats-horizontal shadow">
         <div className="stat">
           <div className="stat-title">Longest Game Played</div>

@@ -123,7 +123,7 @@ export const Setup: FC<SetupProps> = ({
         </Link>
       </nav>
 
-      <h1 className="text-3xl font-bold mb-3 mt-3">Setup</h1>
+      <h1 className="text-3xl font-bold mb-3 mt-3 luminari-font">Setup</h1>
 
       <input
         type="text"
@@ -132,13 +132,13 @@ export const Setup: FC<SetupProps> = ({
         placeholder="Enter player name"
         className="input input-bordered mb-3 mr-2"
       />
-      <button className="btn btn-primary text-white mb-3" onClick={addPlayer}>
+      <button className="btn btn-primary text-white mb-3 font-bold" onClick={addPlayer}>
         Add Player
       </button>
 
       <div className="my-7"></div>
 
-      <h2 className="text-2xl font-bold mb-2 text-center">Active Players:</h2>
+      <h2 className="text-2xl font-bold mb-2 text-center luminari-font">Active Players:</h2>
       <div className="flex flex-col items-center">
         {availablePlayers.map((player) => (
           <div key={player.name} className="form-control w-full max-w-md">
@@ -147,7 +147,7 @@ export const Setup: FC<SetupProps> = ({
                 player.checked ? "flex-col" : "flex-row"
               } mt-3`}
             >
-              <label className="flex items-center justify-center">
+              <label className="flex items-center justify-center baskerville">
                 <input
                   type="checkbox"
                   className="checkbox"
@@ -166,7 +166,7 @@ export const Setup: FC<SetupProps> = ({
 
             {player.checked && (
               <div className="mt-2 text-center">
-                <h4 className="text-lg">Choose Faction:</h4>
+                <h4 className="text-lg">selected faction:</h4>
                 <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 mt-2 pb-4">
                   {factions.map((faction) => (
                     <button
@@ -180,7 +180,7 @@ export const Setup: FC<SetupProps> = ({
                       style={{
                         color: player.faction === faction.name ? "white" : faction.color,
                         borderWidth: "2px",
-                        minWidth: "100px",
+                        minWidth: "200px",
                       }}
                     >
                       {faction.name}

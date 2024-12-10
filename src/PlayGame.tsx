@@ -141,20 +141,20 @@ export const PlayGame: FC<PlayGameProps> = ({
         </Link>
       </nav>
 
-      <h1 className="text-2xl font-bold mb-3 mt-3">Play Game</h1>
+      <h1 className="text-3xl font-bold mb-3 mt-3 luminari-font">Play Game</h1>
 
           {/* Dice Roller Simulator */}
           <div className="card bg-base-100 shadow-xl card-bordered my-6 p-3 overflow-hidden">
             <div className="card-body">
-              <h2 className="text-2xl font-bold text-center">Battle Roller</h2>
+              <h2 className="text-2xl font-bold text-center luminari-font">Battle Roller</h2>
 
                 {/* Attacker and Defender Labels */}
                 <div className="dice-label-container">
                   <div className="dice-label-left">
-                    <p className="label">Attacker</p>
+                    <p className="label text-2xl baskerville">Attacker</p>
                   </div>
                   <div className="dice-label-right">
-                    <p className="label">Defender</p>
+                    <p className="label text-2xl baskerville">Defender</p>
                   </div>
                 </div>
 
@@ -171,12 +171,12 @@ export const PlayGame: FC<PlayGameProps> = ({
                 {/* Faction Dropdowns */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
                     <div>
-                      <label htmlFor="attacker" className="block text-sm font-medium mb-1">Select Attacker Faction:</label>
+                      <label htmlFor="attacker" className="block font-medium mb-1 baskerville">Select Attacker Faction:</label>
                       <select
                         id="attacker"
                         value={attacker}
                         onChange={(e) => setAttacker(e.target.value)}
-                        className="select select-bordered w-fit"
+                        className="select select-bordered w-fit baskerville"
                       >
                         <option value="">-- Select Faction --</option>
                         <option value="Marquise de Cat">Marquise de Cat</option>
@@ -187,12 +187,12 @@ export const PlayGame: FC<PlayGameProps> = ({
                     </div>
 
                     <div>
-                      <label htmlFor="defender" className="block text-sm font-medium mb-1">Select Defender Faction:</label>
+                      <label htmlFor="defender" className="block font-medium mb-1 baskerville">Select Defender Faction:</label>
                       <select
                         id="defender"
                         value={defender}
                         onChange={(e) => setDefender(e.target.value)}
-                        className="select select-bordered w-fit"
+                        className="select select-bordered w-fit baskerville"
                       >
                         <option value="">-- Select Faction --</option>
                         <option value="Marquise de Cat">Marquise de Cat</option>
@@ -239,7 +239,7 @@ export const PlayGame: FC<PlayGameProps> = ({
       {/* Resettable actions taken counter */}
       <div className="card bg-base-100 shadow-xl flex justify-center my-6 p-3">
         <div className="card-body">
-          <h2 className="text-center text-2xl font-bold mb-4">Actions Taken</h2>
+          <h2 className="text-center text-2xl font-bold mb-4 luminari-font">Actions Taken</h2>
 
           <div className="flex items-center justify-center space-x-4 mt-2">
             <div className="flex items-center space-x-2">
@@ -276,11 +276,11 @@ export const PlayGame: FC<PlayGameProps> = ({
       {/* Total Victory Points and counter for every faction */}
       <div className="card bg-base-100 shadow-xl flex justify-center my-6 p-3">
         <div className="card-body">
-          <h2 className="text-center text-2xl font-bold mb-4">Total Victory Points</h2>
+          <h2 className="text-center text-2xl font-bold mb-4 luminari-font">Total Victory Points</h2>
 
           {/* Marquise VP */}
           <div className="flex items-center justify-center space-x-4 mt-2">
-            <h2 className="text-xl font-bold" style={{ color: 'orange' }}>Marquise de Cat</h2>
+            <h2 className="text-2xl font-bold baskerville" style={{ color: 'orange' }}>Marquise de Cat</h2>
             <div className="flex items-center space-x-2">
             <button
               className="btn btn-circle text-white text-3xl"
@@ -302,7 +302,7 @@ export const PlayGame: FC<PlayGameProps> = ({
 
           {/* Eyrie VP */}
           <div className="flex items-center justify-center space-x-4 mt-2">
-            <h2 className="text-xl font-bold" style={{ color: 'royalblue' }}>&nbsp;&nbsp;&nbsp;Eyrie Dynasty</h2>
+            <h2 className="text-2xl font-bold baskerville" style={{ color: 'royalblue' }}>Eyrie Dynasty</h2>
             <div className="flex items-center space-x-2">
             <button
               className="btn btn-circle text-white text-3xl ml-3"
@@ -324,7 +324,7 @@ export const PlayGame: FC<PlayGameProps> = ({
 
           {/* Woodland Alliance VP */}
           <div className="flex items-center justify-center space-x-4 mt-2">
-            <h2 className="text-xl font-bold" style={{ color: '#4CAF50' }}>&nbsp;&nbsp;Woodland Alliance</h2>
+            <h2 className="text-2xl font-bold baskerville" style={{ color: '#4CAF50' }}>&nbsp;&nbsp;Woodland Alliance</h2>
             <div className="flex items-center space-x-2">
             <button
               className="btn btn-circle text-white text-3xl"
@@ -346,7 +346,7 @@ export const PlayGame: FC<PlayGameProps> = ({
 
           {/* Vagabond VP */}
           <div className="flex items-center justify-center space-x-4 mt-2">
-            <h2 className="text-xl font-bold" style={{ color: 'gray' }}>&nbsp;Vagabond</h2>
+            <h2 className="text-2xl font-bold baskerville" style={{ color: 'gray' }}>&nbsp;Vagabond</h2>
             <div className="flex items-center space-x-2">
             <button
               className="btn btn-circle text-white text-3xl"
@@ -371,7 +371,7 @@ export const PlayGame: FC<PlayGameProps> = ({
       {/* Game Over */}
       <div className="card bg-base-100 shadow-xl my-6 p-3">
         <div className="card-body">
-          <h2 className="text-center text-3xl font-bold mb-2">End Game</h2>
+          <h2 className="text-center text-2xl font-bold mb-2 luminari-font">End Game</h2>
           <div className="flex flex-col items-center space-y-3">
             {currentPlayers.map((playerName) => {
               const playerData = selectedPlayers.find((p) => p.name === playerName);
@@ -398,10 +398,10 @@ export const PlayGame: FC<PlayGameProps> = ({
                     nav(-2);
                   }}
                 >
-                  <span>{playerName} won</span>
+                  <span className="text-xl baskerville">{playerName} won</span>
                   {playerData && (
                     <span
-                      className="ml-2"
+                      className="ml-2 text-xl baskerville"
                       style={{
                         color: factionColors[playerData.faction],
                         border: `2px solid ${factionColors[playerData.faction]}`,
