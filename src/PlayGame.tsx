@@ -346,7 +346,7 @@ export const PlayGame: FC<PlayGameProps> = ({
 
           {/* Vagabond VP */}
           <div className="flex items-center justify-center space-x-4 mt-2">
-            <h2 className="text-2xl font-bold baskerville" style={{ color: 'gray' }}>&nbsp;Vagabond</h2>
+            <h2 className="text-2xl font-bold baskerville" style={{ color: 'gray' }}>&nbsp;&nbsp;Vagabond</h2>
             <div className="flex items-center space-x-2">
             <button
               className="btn btn-circle text-white text-3xl"

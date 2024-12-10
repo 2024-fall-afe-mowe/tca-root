@@ -154,7 +154,7 @@ export const Setup: FC<SetupProps> = ({
                   checked={player.checked}
                   onChange={() => togglePlayerSelection(player.name)}
                 />
-                <span className="label-text ml-3 text-lg text-center">{player.name}</span>
+                <span className="label-text ml-3 text-2xl text-center">{player.name}</span>
               </label>
               <button
                 className={`btn btn-outline btn-error btn-sm ${player.checked ? "mt-2" : "ml-2"}`}
@@ -171,7 +171,7 @@ export const Setup: FC<SetupProps> = ({
                   {factions.map((faction) => (
                     <button
                       key={faction.name}
-                      className={`btn btn-sm ${
+                      className={`btn btn-sm text-lg baskerville ${
                         player.faction === faction.name
                           ? "btn-secondary text-white font-bold"
                           : "btn-outline hover:btn-accent hover:text-white"
