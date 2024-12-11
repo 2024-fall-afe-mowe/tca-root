@@ -6,7 +6,7 @@ import localforage from 'localforage';
 import { AppTitle, Home } from './Home';
 import { Setup } from './Setup';
 import { PlayGame } from './PlayGame';
-import { GameResult, getPreviousPlayers, getLeaderboard } from './game-results';
+import { GameResult, getPreviousPlayers, getLeaderboard, getGeneralFacts } from './game-results';
 import { loadGamesFromCloud, saveGameToCloud } from './tca-cloud-api';
 
 const App = () => {
@@ -72,6 +72,7 @@ const App = () => {
       path: "/",
       element: <Home 
         leaderboardData={getLeaderboard(gameResults)}
+        generalFactsData={getGeneralFacts(gameResults)} 
         setTitle={setTitle}
         gameResults={
           gameResults

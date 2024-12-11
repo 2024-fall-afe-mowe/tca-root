@@ -13,14 +13,24 @@ export interface Player {
   pct: string;
 };
 
+interface GeneralFactsDisplay {
+  totalGames: number;
+  lastPlayed: string;
+  shortestGame: string;
+  longestGame: string;
+  averageGame: string;
+}
+
 interface HomeProps {
   leaderboardData: LeaderboardEntry[];
   gameResults: {timestamp: string, winner: string, loser: string}[];
+  generalFactsData: GeneralFactsDisplay;
   setTitle: (t: string) => void;
 }
 
 export const Home: React.FC<HomeProps> = ({
   leaderboardData,
+  generalFactsData,
   setTitle
 }) => {
 
@@ -79,7 +89,7 @@ export const Home: React.FC<HomeProps> = ({
       <br />
 
       {/* Leaderboard Section */}
-<h1 className="text-2xl font-bold luminari-font">Leaderboard</h1>
+      <h1 className="text-2xl font-bold luminari-font">Leaderboard</h1>
       <div className="card bg-base-100 shadow-xl baskerville">
         <div className="card-body">
           {leaderboardData.length > 0 ? (
@@ -105,8 +115,69 @@ export const Home: React.FC<HomeProps> = ({
       </div>
 
       <div className="my-10"></div>
+      
+      {/* General Stats Section */}
+      <h1 className="text-2xl font-bold luminari-font">Fun Fact Stats</h1>
+      <div
+                className="card bg-base-100 shadow-xl mb-3 baskerville"
+            >
+                <div
+                    className="card-body p-3 overflow-x-hidden"
+                >
+                    <table
+                        className="table"
+                    >
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Total Games
+                                </td>
+                                <th>
+                                    {generalFactsData.totalGames}
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Last Played
+                                </td>
+                                <th>
+                                    {generalFactsData.lastPlayed}
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Shortest Game
+                                </td>
+                                <th>
+                                    {generalFactsData.shortestGame}
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Longest Game
+                                </td>
+                                <th>
+                                    {generalFactsData.longestGame}
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Average Game
+                                </td>
+                                <th>
+                                    {generalFactsData.averageGame}
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-      {/* Fun-Fact Stats Section */}
+            
+      <div className="my-10"></div>
+
+
+      {/* Fun-Fact Stats Section 
       <h1 className="text-2xl font-bold mb-4 luminari-font" >Fun-Fact Stats</h1>
       <div className="stats stats-vertical lg:stats-horizontal shadow">
         <div className="stat">
@@ -132,6 +203,7 @@ export const Home: React.FC<HomeProps> = ({
           <div className="stat-desc">34 VP</div>
         </div>
       </div>
+      */}
     </div>
   );
 };

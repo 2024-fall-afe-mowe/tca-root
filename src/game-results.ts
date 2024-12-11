@@ -1,3 +1,12 @@
+import { durationFormatter } from 'human-readable';
+
+const formatGameDuration = durationFormatter<string>();
+
+const formatLastPlayed = durationFormatter<string>({
+    allowMultiples: ["y", "mo", "d"]
+});
+
+
 export type GameResult = {
     startTime: string;
     endTime: string;
@@ -25,6 +34,14 @@ export type LeaderboardEntry = {
     losses: number;
     avg: string;
     name: string;  
+};
+
+export type GeneralFactsDisplay = {
+    lastPlayed: string; 
+    totalGames: number; 
+    shortestGame: string;
+    longestGame: string;
+    averageGame: string;
 };
 
 export const getLeaderboard = (
@@ -91,3 +108,40 @@ const getLeaderboardEntry = (
         , name: player
     };
 };
+
+export const getGeneralFacts = (results: GameResult[]): GeneralFactsDisplay => {
+
+    const now = Date.now();
+    const gameEndTimesInMilliseconds = results.map(x => Date.parse(x.endTime));
+
+    const lastPlayedInMilliseconds = now - Math.max(...gameEndTimesInMilliseconds);
+
+    const gameDurationsInMilliseconds = results.map(
+        x => Date.parse(x.endTime) - Date.parse(x.startTime)
+    );
+
+    const shortestGameInMilliseconds = Math.min(...gameDurationsInMilliseconds);
+    const longestGameInMilliseconds = Math.max(...gameDurationsInMilliseconds);
+
+    return {
+        lastPlayed: results.length > 0
+            ? `${formatLastPlayed(lastPlayedInMilliseconds)} ago`
+            : 'n/a'
+        , totalGames: results.length
+        , shortestGame: results.length > 0
+            ? formatGameDuration(shortestGameInMilliseconds)
+            : 'n/a'
+        , longestGame: results.length > 0
+            ? formatGameDuration(longestGameInMilliseconds)
+            : 'n/a'
+        , averageGame: results.length > 0
+            ? formatGameDuration(
+                gameDurationsInMilliseconds.reduce(
+                    (acc, x) => acc + x
+                    , 0
+                ) / results.length
+            )
+            : 'n/a'
+    };
+};
+  
