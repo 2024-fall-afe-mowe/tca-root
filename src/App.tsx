@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './App.css';
 import { RouterProvider, createHashRouter } from 'react-router-dom';
+import localforage from 'localforage';
 
 import { AppTitle, Home } from './Home';
 import { Setup } from './Setup';
@@ -18,6 +19,10 @@ const App = () => {
   const [currentPlayers, setCurrentPlayers] = useState<string[]>([]);
   const [leaderboardData, setLeaderboardData] = useState<any[]>([]); 
 
+  const [emailOnModal, setEmailOnModal] = useState("");
+  const [emailForCloudApi, setEmailForCloudApi] = useState("");
+  const emailModalRef = useRef<HTMLDialogElement | null>(null);
+
   useEffect(
     () => {
 
@@ -34,6 +39,15 @@ const App = () => {
 
     loadGameResults();
   }, []); 
+
+  useEffect(() => {
+    const loadEmail = async () => {
+      const savedEmail = await localforage.getItem<string>('email') ?? '';
+      setEmailOnModal(savedEmail);
+      setEmailForCloudApi(savedEmail);
+    };
+    loadEmail();
+  }, []);
   
 
   //
@@ -95,11 +109,36 @@ const App = () => {
   //
 
   return (
+    <div>
     <div className="App">
       {/* main component handling routing */}
       <RouterProvider router={myRouter} />
     </div>
+    <dialog ref={emailModalRef} className="modal modal-bottom sm:modal-middle">
+        <form method="dialog" className="modal-box">
+          <h3 className="font-semibold text-lg">Enter your email</h3>
+          <input
+            type="email"
+            className="input input-bordered w-full my-4"
+            value={emailOnModal}
+            onChange={(e) => setEmailOnModal(e.target.value)}
+            placeholder="Enter email"
+          />
+          <div className="modal-action">
+            <button
+              className="btn btn-primary"
+              onClick={async () => {
+                await localforage.setItem<string>('email', emailOnModal);
+                setEmailForCloudApi(emailOnModal);
+              }}
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </dialog>
+    </div>
   );
-}
+};
 
 export default App;
