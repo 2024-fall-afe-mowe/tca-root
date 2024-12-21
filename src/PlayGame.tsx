@@ -369,6 +369,7 @@ export const PlayGame: FC<PlayGameProps> = ({
                       endTime: new Date().toISOString(),
                       winner: playerName,
                       players: currentPlayers,
+                      faction: playerData?.faction || "Unknown",
                     });
                     nav(-2);
                   }}

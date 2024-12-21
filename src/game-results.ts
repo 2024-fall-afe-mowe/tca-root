@@ -12,6 +12,7 @@ export type GameResult = {
     endTime: string;
     winner: string;
     players: string[];
+    faction: string; 
 };
 
 export const getPreviousPlayers = (results: GameResult[]) => {
@@ -42,6 +43,7 @@ export type GeneralFactsDisplay = {
     shortestGame: string;
     longestGame: string;
     averageGame: string;
+    winningestFaction: { name: string; count: number };
 };
 
 export const getLeaderboard = (
@@ -123,6 +125,25 @@ export const getGeneralFacts = (results: GameResult[]): GeneralFactsDisplay => {
     const shortestGameInMilliseconds = Math.min(...gameDurationsInMilliseconds);
     const longestGameInMilliseconds = Math.max(...gameDurationsInMilliseconds);
 
+// Valid factions
+const validFactions = ["Marquise de Cat", "Eyrie Dynasties", "Woodland Alliance", "Vagabond"];
+
+// Calculate the winningest faction
+const factionWins = results.reduce<Record<string, number>>((acc, game) => {
+    if (validFactions.includes(game.faction)) {
+        acc[game.faction] = (acc[game.faction] || 0) + 1;
+    }
+    return acc;
+}, {});
+
+const sortedFactions = Object.entries(factionWins).sort(
+    (a, b) => b[1] - a[1]
+);
+
+const winningFaction = sortedFactions.length > 0 ? sortedFactions[0][0] : "None";
+const winningCount = sortedFactions.length > 0 ? sortedFactions[0][1] : 0;
+
+
     return {
         lastPlayed: results.length > 0
             ? `${formatLastPlayed(lastPlayedInMilliseconds)} ago`
@@ -141,7 +162,8 @@ export const getGeneralFacts = (results: GameResult[]): GeneralFactsDisplay => {
                     , 0
                 ) / results.length
             )
-            : 'n/a'
+            : 'n/a',
+        winningestFaction: { name: winningFaction, count: winningCount },
     };
 };
   

@@ -114,9 +114,7 @@ const App = () => {
 
   return (
     <div className="App min-h-screen" data-theme={darkMode ? "dark" : "light"}>
-    <header className="flex justify-between items-center px-4 py-2">
-      {/* Logo or other content can stay here */}
-    </header>
+    <header className="flex justify-between items-center px-4 py-2"></header>
   
     {/* Light/Dark mode swap */}
     <div className="absolute top-0 right-0 m-4 flex items-center space-x-4">

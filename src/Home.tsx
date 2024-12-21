@@ -19,6 +19,7 @@ interface GeneralFactsDisplay {
   shortestGame: string;
   longestGame: string;
   averageGame: string;
+  winningestFaction: { name: string; count: number };
 }
 
 interface HomeProps {
@@ -139,6 +140,15 @@ export const Home: React.FC<HomeProps> = ({
                                 </td>
                                 <th>
                                     {generalFactsData.averageGame}
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Winningest Faction
+                                </td>
+                                <th>
+                                  {generalFactsData.winningestFaction.name} ({generalFactsData.winningestFaction.count}
+                                  {` ${generalFactsData.winningestFaction.count === 1 ? "win" : "wins"}`})
                                 </th>
                             </tr>
                         </tbody>
