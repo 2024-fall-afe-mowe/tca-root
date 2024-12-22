@@ -13,6 +13,7 @@ export type GameResult = {
     winner: string;
     players: string[];
     faction: string; 
+    victoryPoints: number;
 };
 
 export const getPreviousPlayers = (results: GameResult[]) => {
@@ -44,6 +45,9 @@ export type GeneralFactsDisplay = {
     longestGame: string;
     averageGame: string;
     winningestFaction: { name: string; count: number };
+    highestVPAchieved: number;
+    highestVPAchievedPlayer: string;
+    highestVPAchievedFaction: string;
 };
 
 export const getLeaderboard = (
@@ -144,6 +148,18 @@ const winningFaction = sortedFactions.length > 0 ? sortedFactions[0][0] : "None"
 const winningCount = sortedFactions.length > 0 ? sortedFactions[0][1] : 0;
 
 
+// Calculate highest VP achieved
+const highestVPAchieved = results.length > 0
+    ? Math.max(...results.map((game) => (game.victoryPoints || 0)))
+    : 0;
+
+ // Find the player and faction who achieved the highest VP
+ const highestVPGame = results.find((game) => game.victoryPoints === highestVPAchieved);
+ const highestVPAchievedPlayer = highestVPGame ? highestVPGame.players[0] : "Unknown Player";
+ const highestVPAchievedFaction = highestVPGame ? highestVPGame.faction : "Unknown Faction";
+
+
+
     return {
         lastPlayed: results.length > 0
             ? `${formatLastPlayed(lastPlayedInMilliseconds)} ago`
@@ -164,6 +180,9 @@ const winningCount = sortedFactions.length > 0 ? sortedFactions[0][1] : 0;
             )
             : 'n/a',
         winningestFaction: { name: winningFaction, count: winningCount },
+        highestVPAchieved,
+        highestVPAchievedPlayer,
+        highestVPAchievedFaction,
     };
 };
   

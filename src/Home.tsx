@@ -20,6 +20,9 @@ interface GeneralFactsDisplay {
   longestGame: string;
   averageGame: string;
   winningestFaction: { name: string; count: number };
+  highestVPAchieved: number;
+  highestVPAchievedPlayer: string;
+  highestVPAchievedFaction: string;
 }
 
 interface HomeProps {
@@ -149,6 +152,14 @@ export const Home: React.FC<HomeProps> = ({
                                 <th>
                                   {generalFactsData.winningestFaction.name} ({generalFactsData.winningestFaction.count}
                                   {` ${generalFactsData.winningestFaction.count === 1 ? "win" : "wins"}`})
+                                </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Highest VP Achieved
+                                </td>
+                                <th>
+                                  {generalFactsData.highestVPAchieved} ({generalFactsData.highestVPAchievedPlayer}, {generalFactsData.highestVPAchievedFaction})
                                 </th>
                             </tr>
                         </tbody>

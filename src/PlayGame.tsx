@@ -102,6 +102,23 @@ export const PlayGame: FC<PlayGameProps> = ({
     "Vagabond": "gray",
   };
 
+  {/*Function to retrieve VP for the winner based on faction */}
+  const getWinnerVP = (winnerFaction: string): number => {
+    switch (winnerFaction) {
+      case "Marquise de Cat":
+        return marquisePoints;
+      case "Eyrie Dynasties":
+        return eyriePoints;
+      case "Woodland Alliance":
+        return woodlandPoints;
+      case "Vagabond":
+        return vagabondPoints;
+      default:
+        return 0; // Default to 0 if faction is unrecognized
+    }
+  };
+  
+
   return (
 
     <div>
@@ -370,6 +387,7 @@ export const PlayGame: FC<PlayGameProps> = ({
                       winner: playerName,
                       players: currentPlayers,
                       faction: playerData?.faction || "Unknown",
+                      victoryPoints: playerData ? getWinnerVP(playerData.faction) : 0,
                     });
                     nav(-2);
                   }}
