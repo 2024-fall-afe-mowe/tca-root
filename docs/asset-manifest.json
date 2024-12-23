@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/tca-root/static/css/main.d73e6f92.css",
-    "main.js": "/tca-root/static/js/main.8209dbbd.js",
+    "main.css": "/tca-root/static/css/main.1d74a3e6.css",
+    "main.js": "/tca-root/static/js/main.6c3765d7.js",
     "static/js/453.f946be2e.chunk.js": "/tca-root/static/js/453.f946be2e.chunk.js",
     "static/media/logo.png": "/tca-root/static/media/logo.ea061985a6e6ba7f9e2b.png",
     "static/media/Luminari-Regular.ttf": "/tca-root/static/media/Luminari-Regular.bf4601ff4e7dd8fe5ea7.ttf",
     "index.html": "/tca-root/index.html",
-    "main.d73e6f92.css.map": "/tca-root/static/css/main.d73e6f92.css.map",
-    "main.8209dbbd.js.map": "/tca-root/static/js/main.8209dbbd.js.map",
+    "main.1d74a3e6.css.map": "/tca-root/static/css/main.1d74a3e6.css.map",
+    "main.6c3765d7.js.map": "/tca-root/static/js/main.6c3765d7.js.map",
     "453.f946be2e.chunk.js.map": "/tca-root/static/js/453.f946be2e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d73e6f92.css",
-    "static/js/main.8209dbbd.js"
+    "static/css/main.1d74a3e6.css",
+    "static/js/main.6c3765d7.js"
   ]
 }
