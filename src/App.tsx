@@ -23,22 +23,16 @@ const App = () => {
   const [emailForCloudApi, setEmailForCloudApi] = useState("");
   const emailModalRef = useRef<HTMLDialogElement | null>(null);
 
-  useEffect(
-    () => {
-
-      const loadGameResults = async () => {
-        
-        const savedGameResults = await loadGamesFromCloud(
-          "pbrummel@gmail.com"
-          , "tca-root-24f"
-        );
-
-      setGameResults(savedGameResults);
-      setLeaderboardData(getLeaderboard(savedGameResults)); 
+  useEffect(() => {
+    const loadGameResults = async () => {
+      if (emailForCloudApi) {
+        const savedGameResults = await loadGamesFromCloud(emailForCloudApi, "tca-root-24f");
+        setGameResults(savedGameResults);
+        setLeaderboardData(getLeaderboard(savedGameResults)); 
+      }
     };
-
     loadGameResults();
-  }, []); 
+  }, [emailForCloudApi]);
 
   useEffect(() => {
     const loadEmail = async () => {
@@ -58,9 +52,13 @@ const App = () => {
 
   const addNewGameResult = async (newResult: GameResult) => {
     try {
-      await saveGameToCloud("pbrummel@gmail.com", "tca-root-24f", newResult.endTime, newResult);
-      setGameResults((prev) => [...prev, newResult]);
-      setLeaderboardData(getLeaderboard([...gameResults, newResult]));  // Update leaderboard after new game result
+      if (emailForCloudApi) {
+        await saveGameToCloud(emailForCloudApi, "tca-root-24f", newResult.endTime, newResult);
+        setGameResults((prev) => [...prev, newResult]);
+        setLeaderboardData(getLeaderboard([...gameResults, newResult])); // Update leaderboard
+      } else {
+        console.error("No email set for saving to the cloud.");
+      }
     } catch (e) {
       console.error(e);
     }
@@ -117,9 +115,9 @@ const App = () => {
     <header className="flex justify-between items-center px-4 py-2"></header>
   
     {/* Light/Dark mode swap */}
-    <div className="absolute top-0 right-0 m-4 flex items-center space-x-4">
+    <div className="absolute top-0 right-0 m-4 flex items-center space-x-2">
        {/* Signed in as text */}
-       <span>Signed in as: pbrummel@gmail.com</span>
+       <span className="mr-1">{emailForCloudApi}</span>
        
       <label className="swap swap-rotate">
         {/* This hidden checkbox controls the state */}
@@ -155,30 +153,6 @@ const App = () => {
       {/* Main component handling routing */}
       <RouterProvider router={myRouter} />
     </div>
-  
-    <dialog ref={emailModalRef} className="modal modal-bottom sm:modal-middle">
-      <form method="dialog" className="modal-box">
-        <h3 className="font-semibold text-lg">Enter your email</h3>
-        <input
-          type="email"
-          className="input input-bordered w-full my-4"
-          value={emailOnModal}
-          onChange={(e) => setEmailOnModal(e.target.value)}
-          placeholder="Enter email"
-        />
-        <div className="modal-action">
-          <button
-            className="btn btn-primary"
-            onClick={async () => {
-              await localforage.setItem<string>("email", emailOnModal);
-              setEmailForCloudApi(emailOnModal);
-            }}
-          >
-            Save
-          </button>
-        </div>
-      </form>
-    </dialog>
   </div>
   
   );

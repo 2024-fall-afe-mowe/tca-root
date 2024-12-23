@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import logo from "./logo.png";
 import { LeaderboardEntry } from "./game-results";
+import React, { useRef } from "react";
+import localforage from "localforage";
 
 export const AppTitle = "Root Companion App";
 
@@ -11,7 +13,7 @@ export interface Player {
   wins: number;
   losses: number;
   pct: string;
-};
+}
 
 interface GeneralFactsDisplay {
   totalGames: number;
@@ -27,7 +29,7 @@ interface GeneralFactsDisplay {
 
 interface HomeProps {
   leaderboardData: LeaderboardEntry[];
-  gameResults: {timestamp: string, winner: string, loser: string}[];
+  gameResults: { timestamp: string; winner: string; loser: string }[];
   generalFactsData: GeneralFactsDisplay;
   setTitle: (t: string) => void;
 }
@@ -35,19 +37,35 @@ interface HomeProps {
 export const Home: React.FC<HomeProps> = ({
   leaderboardData,
   generalFactsData,
-  setTitle
+  setTitle,
 }) => {
+  const emailModalRef = useRef<HTMLDialogElement | null>(null);
 
-  useEffect(
-    () => setTitle(AppTitle)
-    , []
-  );
+  const openEmailModal = () => {
+    emailModalRef.current?.showModal();
+  };
+
+  const [emailForCloudApi, setEmailForCloudApi] = useState<string | null>(null);
+  const [emailOnModal, setEmailOnModal] = useState<string>("");
+
+  useEffect(() => {
+    setTitle(AppTitle);
+
+    // Load email from localforage on component mount
+    const loadEmail = async () => {
+      const savedEmail = await localforage.getItem<string>("email");
+      setEmailForCloudApi(savedEmail || null);
+    };
+
+    loadEmail();
+  }, [setTitle]);
 
   const [players, setPlayers] = useState<Player[]>([]);
 
   return (
     <div>
-      <br/><br/>
+      <br />
+      <br />
 
       {/* Navbar with Centered Logo */}
       <nav className="navbar bg-base-100 justify-center">
@@ -58,7 +76,53 @@ export const Home: React.FC<HomeProps> = ({
 
       <h2 className="text-2xl luminari-font">a companion app by TSA Games</h2>
       <br />
-      
+      <div className="flex items-center space-x-2 justify-center">
+          <span className="text-sm baskerville">
+            Currently logged in as: <span className= "font-semibold">{emailForCloudApi || "Guest"}</span>
+          </span>
+          <button className="btn btn-sm btn-primary font-bold text-white" onClick={openEmailModal}>
+            Switch
+          </button>
+        </div>
+      <br />
+      {/* Email Modal */}
+      <dialog
+        ref={emailModalRef}
+        className="modal modal-bottom sm:modal-middle"
+      >
+        <form method="dialog" className="modal-box relative">
+             {/* Close Button */}
+              <button
+                type="button"
+                className="absolute top-2 right-2 btn btn-sm btn-circle btn-ghost"
+                onClick={() => emailModalRef.current?.close()}
+              >
+                ✕
+              </button>
+
+          <h3 className="font-semibold text-lg">Enter your email</h3>
+          <input
+            type="email"
+            className="input input-bordered w-full my-4"
+            value={emailOnModal}
+            onChange={(e) => setEmailOnModal(e.target.value)}
+            placeholder="Enter email"
+          />
+          (You will need to refresh after saving to view new user info)
+          <div className="modal-action">
+            <button
+              className="btn btn-primary text-white"
+              onClick={async () => {
+                await localforage.setItem("email", emailOnModal);
+                setEmailForCloudApi(emailOnModal);
+              }}
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      </dialog>
+
       <Link to="/setup" className="btn btn-secondary font-bold arial">
         Go to Setup
       </Link>
@@ -77,11 +141,16 @@ export const Home: React.FC<HomeProps> = ({
               <div className="text-center font-bold">Pct</div>
             </div>
           ) : (
-            <p className="text-center">(Please add new players to view Leaderboard)</p>
+            <p className="text-center">
+              (Please add new players to view Leaderboard)
+            </p>
           )}
 
           {leaderboardData.map((player, index) => (
-            <div key={index} className="grid grid-cols-4 gap-4 mt-2 border-b border-gray-300 pb-2">
+            <div
+              key={index}
+              className="grid grid-cols-4 gap-4 mt-2 border-b border-gray-300 pb-2"
+            >
               <div className="text-left">{player.name}</div>
               <div className="text-center">{player.wins}</div>
               <div className="text-center">{player.losses}</div>
@@ -92,112 +161,60 @@ export const Home: React.FC<HomeProps> = ({
       </div>
 
       <div className="my-10"></div>
-      
+
       {/* General Stats Section */}
       <h1 className="text-2xl font-bold luminari-font">Fun Fact Stats</h1>
-      <div
-                className="card bg-base-100 shadow-xl mb-3 baskerville"
-            >
-                <div
-                    className="card-body p-3 overflow-x-hidden"
-                >
-                    <table
-                        className="table"
-                    >
-                        <tbody>
-                            <tr>
-                                <td>
-                                    Total Games
-                                </td>
-                                <th>
-                                    {generalFactsData.totalGames}
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Last Played
-                                </td>
-                                <th>
-                                    {generalFactsData.lastPlayed}
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Shortest Game
-                                </td>
-                                <th>
-                                    {generalFactsData.shortestGame}
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Longest Game
-                                </td>
-                                <th>
-                                    {generalFactsData.longestGame}
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Average Game
-                                </td>
-                                <th>
-                                    {generalFactsData.averageGame}
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Winningest Faction
-                                </td>
-                                <th>
-                                  {generalFactsData.winningestFaction.name} ({generalFactsData.winningestFaction.count}
-                                  {` ${generalFactsData.winningestFaction.count === 1 ? "win" : "wins"}`})
-                                </th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Highest VP Achieved
-                                </td>
-                                <th>
-                                  {generalFactsData.highestVPAchieved} ({generalFactsData.highestVPAchievedPlayer}, {generalFactsData.highestVPAchievedFaction})
-                                </th>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            
-      <div className="my-10"></div>
-
-
-      {/* Fun-Fact Stats Section 
-      <h1 className="text-2xl font-bold mb-4 luminari-font" >Fun-Fact Stats</h1>
-      <div className="stats stats-vertical lg:stats-horizontal shadow">
-        <div className="stat">
-          <div className="stat-title">Longest Game Played</div>
-          <div className="stat-value">1hr 20mins</div>
-          <div className="stat-desc">4-player game</div>
-          <div className="stat-desc">Sept 28, 2024</div>
-        </div>
-        <div className="stat">
-          <div className="stat-title">Shortest Game Played</div>
-          <div className="stat-value">22 mins</div>
-          <div className="stat-desc">2-Player game</div>
-          <div className="stat-desc">Sept 29, 2024</div>
-        </div>
-        <div className="stat">
-          <div className="stat-title">Most Winning Faction</div>
-          <div className="stat-value">Marquise de Cat</div>
-          <div className="stat-desc">15 victories</div>
-        </div>
-        <div className="stat">
-          <div className="stat-title">Highest Points Achieved</div>
-          <div className="stat-value">Woodland Alliance</div>
-          <div className="stat-desc">34 VP</div>
+      <div className="card bg-base-100 shadow-xl mb-3 baskerville">
+        <div className="card-body p-3 overflow-x-hidden">
+          <table className="table">
+            <tbody>
+              <tr>
+                <td>Total Games</td>
+                <th>{generalFactsData.totalGames}</th>
+              </tr>
+              <tr>
+                <td>Last Played</td>
+                <th>{generalFactsData.lastPlayed}</th>
+              </tr>
+              <tr>
+                <td>Shortest Game</td>
+                <th>{generalFactsData.shortestGame}</th>
+              </tr>
+              <tr>
+                <td>Longest Game</td>
+                <th>{generalFactsData.longestGame}</th>
+              </tr>
+              <tr>
+                <td>Average Game</td>
+                <th>{generalFactsData.averageGame}</th>
+              </tr>
+              <tr>
+                <td>Winningest Faction</td>
+                <th>
+                  {generalFactsData.winningestFaction.name} (
+                  {generalFactsData.winningestFaction.count}
+                  {` ${
+                    generalFactsData.winningestFaction.count === 1
+                      ? "win"
+                      : "wins"
+                  }`}
+                  )
+                </th>
+              </tr>
+              <tr>
+                <td>Highest VP Achieved</td>
+                <th>
+                  {generalFactsData.highestVPAchieved} (
+                  {generalFactsData.highestVPAchievedPlayer},{" "}
+                  {generalFactsData.highestVPAchievedFaction})
+                </th>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-      */}
+
+      <div className="my-10"></div>
     </div>
   );
 };
