@@ -215,6 +215,7 @@ export const Home: React.FC<HomeProps> = ({
       </div>
 
       <div className="my-10"></div>
+      <br/>
     </div>
   );
 };
