@@ -15,9 +15,9 @@ export const PlayGame: FC<PlayGameProps> = ({
   , addNewGameResult
 }) => {
 
-    const [startTimeState, setStartTimeState] = useState(new Date().toISOString());
+    const [startTimeState] = useState(new Date().toISOString());
 
-    const [winner, setWinner] = useState<string | null>(null); // For tracking the winner (temporary)
+    const [winner, setWinner] = useState<string | null>(null); 
 
     const nav = useNavigate();
 

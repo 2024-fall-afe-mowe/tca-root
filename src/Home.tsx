@@ -60,7 +60,6 @@ export const Home: React.FC<HomeProps> = ({
     loadEmail();
   }, [setTitle]);
 
-  const [players, setPlayers] = useState<Player[]>([]);
 
   return (
     <div>

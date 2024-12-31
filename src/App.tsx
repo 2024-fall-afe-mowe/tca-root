@@ -21,7 +21,6 @@ const App = () => {
 
   const [emailOnModal, setEmailOnModal] = useState("");
   const [emailForCloudApi, setEmailForCloudApi] = useState("");
-  const emailModalRef = useRef<HTMLDialogElement | null>(null);
 
   useEffect(() => {
     const loadGameResults = async () => {
