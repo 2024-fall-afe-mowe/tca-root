@@ -1,6 +1,8 @@
 import { FC, useState } from 'react';
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import logo from "./logo.png";
+import { useLocation } from "react-router-dom";
 import { GameResult } from './game-results';
 
 interface PlayGameProps {
@@ -115,6 +117,7 @@ export const PlayGame: FC<PlayGameProps> = ({
         return 0; // Default to 0 if faction is unrecognized
     }
   };
+  
 
   return (
 
@@ -357,151 +360,58 @@ export const PlayGame: FC<PlayGameProps> = ({
       </div>
       </div>
 
+      {/* Game Over */}
       <div className="card bg-base-100 shadow-xl my-6 p-3">
-                <div className="card-body">
-                    <h2 className="text-center text-2xl font-bold mb-2 luminari-font">End Game</h2>
-                    <div className="flex flex-col items-center space-y-3">
-                        {selectedPlayers.map((player1) => {
-                            const player1Data = selectedPlayers.find((p) => p.name === player1.name);
+        <div className="card-body">
+          <h2 className="text-center text-2xl font-bold mb-2 luminari-font">End Game</h2>
+          <div className="flex flex-col items-center space-y-3">
+            {currentPlayers.map((playerName) => {
+              const playerData = selectedPlayers.find((p) => p.name === playerName);
 
-                            // Buttons for single winners
-                            return (
-                                <button
-                                    key={player1.name}
-                                    className="btn text-lg font-bold min-h-[5rem] pb-2 md:pb-1 lg:pb-0"
-                                    style={{
-                                        backgroundColor: "white",
-                                        color: player1Data ? factionColors[player1Data.faction] : "black",
-                                        borderColor: player1Data ? factionColors[player1Data.faction] : "black",
-                                    }}
-                                    onClick={() => {
-                                        if (player1Data) {
-                                            setWinner(player1Data.name);
-                                        }
-                                        addNewGameResult({
-                                            startTime: startTimeState,
-                                            endTime: new Date().toISOString(),
-                                            winner: player1.name,
-                                            players: currentPlayers,
-                                            faction: player1Data?.faction || "Unknown",
-                                            victoryPoints: player1Data ? getWinnerVP(player1Data.faction) : 0,
-                                        });
-                                        nav(-2);
-                                    }}
-                                >
-                                    <span className="text-xl baskerville">{player1.name} won</span>
-                                    {player1Data && (
-                                        <span
-                                            className="ml-2 text-xl baskerville"
-                                            style={{
-                                                color: factionColors[player1Data.faction],
-                                                border: `2px solid ${factionColors[player1Data.faction]}`,
-                                                padding: "2px 5px",
-                                                borderRadius: "5px",
-                                            }}
-                                        >
-                                            {player1Data.faction}
-                                        </span>
-                                    )}
-                                </button>
-                            );
-                        })}
-
-      {/* Buttons for shared wins if Vagabond is selected */}
-      {selectedPlayers.map((player1) => {
-          const player1Data = selectedPlayers.find((p) => p.name === player1.name);
-
-          return selectedPlayers.map((player2) => {
-              if (player1.name !== player2.name && player1Data?.faction === "Vagabond") {
-                  const player2Data = selectedPlayers.find((p) => p.name === player2.name); // Find player2's data here
-
-                  return (
-                      <button
-                          key={`${player1.name}-${player2.name}`}
-                          className="btn text-lg font-bold min-h-[5rem] pb-2 md:pb-1 lg:pb-0"
-                          style={{
-                              backgroundColor: "white", // Soft light purple background
-                              color: "#5e5e9a", // Soft purple text color
-                              borderColor: "#5e5e9a", // Soft purple border
-                          }}
-                          onClick={() => {
-                              // Set the joint winner text
-                              setWinner(`${player1.name} and ${player2.name}`);
-                              
-                              // Add game result with both players as winners
-                              addNewGameResult({
-                                  startTime: startTimeState,
-                                  endTime: new Date().toISOString(),
-                                  winner: `${player1.name} and ${player2.name}`, // Joint winners
-                                  players: currentPlayers,
-                                  faction: player1Data?.faction || "Unknown",
-                                  victoryPoints: getWinnerVP(player1Data.faction),
-                              });
-
-                              // Log the game result for player1
-                              if (player1Data) {
-                                  addNewGameResult({
-                                      startTime: startTimeState,
-                                      endTime: new Date().toISOString(),
-                                      winner: player1.name,
-                                      players: currentPlayers,
-                                      faction: player1Data?.faction || "Unknown",
-                                      victoryPoints: getWinnerVP(player1Data.faction),
-                                  });
-                              }
-
-                              // Log the game result for player2 (only if player2Data is valid)
-                              if (player2Data) {
-                                  addNewGameResult({
-                                      startTime: startTimeState,
-                                      endTime: new Date().toISOString(),
-                                      winner: player2.name,
-                                      players: currentPlayers,
-                                      faction: player2Data?.faction || "Unknown",
-                                      victoryPoints: getWinnerVP(player2Data.faction),
-                                  });
-                              }
-
-                              nav(-2); // Navigate after the result is saved
-                          }}
-                      >
-                          <span className="text-xl baskerville">
-                              {player1.name}
-                              <span
-                                  className="ml-2 px-2 py-1 rounded-full border"
-                                  style={{
-                                      color: "#5e5e9a", // Soft purple color for player1's faction
-                                      border: "2px solid #5e5e9a", // Soft purple border
-                                      padding: "2px 5px",
-                                      borderRadius: "5px",
-                                  }}
-                              >
-                                  {player1Data?.faction}
-                              </span>
-                          </span>
-                          <span className="text-xl baskerville">
-                              and {player2.name}
-                              <span
-                                  className="ml-2 px-2 py-1 rounded-full border"
-                                  style={{
-                                      color: "#5e5e9a", // Soft purple color for player2's faction
-                                      border: "2px solid #5e5e9a", // Soft purple border
-                                      padding: "2px 5px",
-                                      borderRadius: "5px",
-                                  }}
-                              >
-                                  {player2Data?.faction || "Unknown"} {/* Default to "Unknown" if faction is undefined */}
-                              </span>
-                              <span className="ml-2">both won</span>
-                          </span>
-                      </button>
-                  );
-              }
-              return null;
-          });
-      })}
-              </div>
+              return (
+                <button
+                  key={playerName}
+                  className="btn text-lg font-bold min-h-[5rem] pb-2 md:pb-1 lg:pb-0"
+                  style={{
+                    backgroundColor: "white",
+                    color: playerData ? factionColors[playerData.faction] : "black",
+                    borderColor: playerData ? factionColors[playerData.faction] : "black",
+                  }}
+                  onClick={() => {
+                    if (playerData) {
+                      setWinner(playerData.name);
+                    }
+                    addNewGameResult({
+                      startTime: startTimeState,
+                      endTime: new Date().toISOString(),
+                      winner: playerName,
+                      players: currentPlayers,
+                      faction: playerData?.faction || "Unknown",
+                      victoryPoints: playerData ? getWinnerVP(playerData.faction) : 0,
+                    });
+                    nav(-2);
+                  }}
+                >
+                  <span className="text-xl baskerville">{playerName} won</span>
+                  {playerData && (
+                    <span
+                      className="ml-2 text-xl baskerville"
+                      style={{
+                        color: factionColors[playerData.faction],
+                        border: `2px solid ${factionColors[playerData.faction]}`,
+                        padding: "2px 5px",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {playerData.faction}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
+        </div>
+
       </div>
 
 
@@ -509,7 +419,6 @@ export const PlayGame: FC<PlayGameProps> = ({
       <button className="btn btn-info text-white mb-3 font-bold" onClick={() => nav("/")}>
         Back to Home
       </button>
-      <br/>
     </div>
   );
 };
